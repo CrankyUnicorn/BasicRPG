@@ -13,4 +13,10 @@ public class MainActivity extends AppCompatActivity {
 
         //this is my test comment
     }
+
+    private void onPushIntoGitHub(){
+
+        int i = 321;
+
+    }
 }
