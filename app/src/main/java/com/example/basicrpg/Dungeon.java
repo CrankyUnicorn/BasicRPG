@@ -1,9 +1,19 @@
 package com.example.basicrpg;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import com.example.basicrpg.DungeonNameGenerator;
+import com.example.basicrpg.Util;
+
 public class Dungeon {
 
 
     private String dungeonName;
+
+
 
     private int dungeonTotalLevels;
     private int dungeonTotalSections;
@@ -17,28 +27,41 @@ public class Dungeon {
 
 
     //CONSTRUCTOR
-    public void Dungeon(String _dungeonName,){
+   Dungeon(String _dungeonName, int _dungeonLevels, int _dungeonSections, int _dungeonRooms){
 
-        dungeonName = _dungeonName;
+       dungeonName = DungeonNameGenerator.GenerateDungeonName();
 
-        Populator();
+       dungeonTotalLevels = _dungeonLevels < 1 ? 1 : _dungeonLevels ;
+
+       dungeonTotalSections = _dungeonSections < _dungeonLevels ? _dungeonLevels : _dungeonSections;
+
+       dungeonTotalRooms = _dungeonRooms < dungeonTotalSections ? dungeonTotalSections : _dungeonRooms;
+
+       SetDungeon();
     }
 
-    public void Dungeon(){
+    Dungeon(){}
 
-        Populator();
-    }
+    //SETTER
+    private void SetDungeon(){
 
-    //POPULATOR
-    private void Populator(){
+        int sectorRemainder = dungeonTotalSections;
 
-        dungeonTotalLevels = 0;
-        dungeonTotalSections = 0;
-        dungeonTotalRooms = 0;
+        int roomRemainder = dungeonTotalRooms;
 
-        dungeonTotalLevelsExplored = 0;
-        dungeonTotalSectionsExplored = 0;
-        dungeonTotalRoomsExplored = 0;
+
+        for (int i = 0; i <dungeonTotalLevels; i++) {
+
+            int levelSectors = Util.GenerateNumberBetween(1,sectorRemainder-(dungeonTotalSections-i));
+            int levelRooms = Util.GenerateNumberBetween(1,roomRemainder-(dungeonTotalSections-i));
+
+            sectorRemainder -= levelSectors;
+            roomRemainder -= levelRooms;
+
+            DungeonLevel iDungeonLevel = new DungeonLevel(levelSectors, levelRooms);
+
+            listDungeonLevels.add(iDungeonLevel);
+        }
 
     }
 
@@ -61,12 +84,12 @@ public class Dungeon {
 
 
     //DungeonTotalLevels ACESSOR
-    public void SetDungeonTotalLevels(String _dungeonTotalLevels){
+    public void SetDungeonTotalLevels(int _dungeonTotalLevels){
 
-        if(dungeonTotalLevels==0 || dungeonTotalLevels==null){
+        if(dungeonTotalLevels==0){
 
             dungeonTotalLevels = _dungeonTotalLevels;
-        }
+        }else{}
 
     }
 
@@ -78,9 +101,9 @@ public class Dungeon {
 
 
     //DungeonTotalSections ACESSOR
-    public void SetDungeonTotalSections(String _dungeonTotalSections){
+    public void SetDungeonTotalSections(int _dungeonTotalSections){
 
-        if(dungeonTotalSections == 0 || dungeonTotalSections == null){
+        if(dungeonTotalSections == 0){
 
             dungeonTotalSections = _dungeonTotalSections;
         }
@@ -94,9 +117,9 @@ public class Dungeon {
 
 
     //DungeonTotalRooms ACESSOR
-    public void SetDungeonTotalRooms(String _dungeonTotalRooms){
+    public void SetDungeonTotalRooms(int _dungeonTotalRooms){
 
-        if(dungeonTotalRooms == 0 || dungeonTotalRooms == null){
+        if(dungeonTotalRooms == 0 ){
 
             dungeonTotalRooms = _dungeonTotalRooms;
         }
@@ -111,7 +134,7 @@ public class Dungeon {
 
 
     //DungeonTotalLevelsExplored ACESSOR
-    public void SetDungeonTotalLevelsExplored(String _dungeonTotalLevelsExplored){
+    public void SetDungeonTotalLevelsExplored(int _dungeonTotalLevelsExplored){
 
         dungeonTotalLevelsExplored = _dungeonTotalLevelsExplored;
     }
@@ -123,7 +146,7 @@ public class Dungeon {
 
 
     //DungeonTotalSectionsExplored ACESSOR
-    public void SetDungeonTotalSectionsExplored(String _dungeonTotalSectionsExplored){
+    public void SetDungeonTotalSectionsExplored(int _dungeonTotalSectionsExplored){
 
         dungeonTotalSectionsExplored = _dungeonTotalSectionsExplored;
     }
@@ -135,7 +158,7 @@ public class Dungeon {
 
 
     //DungeonTotalRoomsExplored ACESSOR
-    public void SetDungeonTotalRoomsExplored(String _dungeonTotalRoomsExplored){
+    public void SetDungeonTotalRoomsExplored(int _dungeonTotalRoomsExplored){
 
         dungeonTotalRoomsExplored = _dungeonTotalRoomsExplored;
     }
@@ -144,5 +167,7 @@ public class Dungeon {
 
         return dungeonTotalRoomsExplored;
     }
+
+
 
 }
