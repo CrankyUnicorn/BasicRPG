@@ -19,8 +19,8 @@ public class DungeonRoom{
 
 	//CONSTRUCTOR OVERLOAD
     DungeonRoom(IRoomTrap _thisRoomTrap, int _roomId, String _roomName,String _roomDescription, int[] _roomExitsId, String[] _roomExitsNames){
-		
-		thisRoomTrap = _thisRoomTrap;
+
+		thisRoomTrap =_thisRoomTrap;
 
 		roomId = _roomId;
 		roomName = _roomName;

@@ -27,7 +27,7 @@ public class DungeonSection {
 
         for (int i = 0; i <_numberOfRooms; i++){
 
-            DungeonRoom dungeonRoom = roomList; //get a room from a room List
+            DungeonRoom dungeonRoom = RoomsList.getInstance().GetRandomRoom(); //get a random room from a room List
 
 
             thisDungeonSection.add(dungeonRoom);

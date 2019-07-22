@@ -6,46 +6,58 @@ import java.util.Random;
 
 public class TrapsList {
 
-    public List<RoomTrap> roomTrapList = new ArrayList<RoomTrap>();
+    private static final TrapsList ourInstance = new TrapsList(GameSettings.trapTypes);//
 
-    private String[] trapNamePrefix = { "Dark", "Bloody", "Dreadic", "Sharp", "Rusty","Poisoned"};
-    private String[] trapName = {"Spring","Dead","Bear","Switch","Rat"};
-    private String[] trapNameSuffix = {"Trap","Pit","Deadfall","Loop","Spike"};
+    public static TrapsList getInstance() {
+        return ourInstance;
+    }
+
+    private static List<RoomTrap> roomTrapList = new ArrayList<RoomTrap>();
+
+
 
 	//CONSTRUCTOR OVERLOAD
-    TrapsList(int _trapQuantity){
+    private TrapsList(int _trapQuantity){
+
+        NoTrap(); //No trap
+
         for(int i = 0 ; i < _trapQuantity; i++){
 
-            RoomTrap generatedRoomTrap = new RoomTrap(	GenerateTrapName(),
-														GenerateNumberBetween(1,20),
-														GenerateNumberBetween(1,20),
-														GenerateNumberBetween(1,20));
+            RoomTrap generatedRoomTrap = new RoomTrap(	DungeonNameGenerator.GenerateTrapName(),
+														Util.GenerateNumberBetween(1,20),
+                                                        Util.GenerateNumberBetween(1,20),
+                                                        Util.GenerateNumberBetween(1,20));
 
             roomTrapList.add(generatedRoomTrap);
         }
 
     }
 
+    private void NoTrap(){
+
+            RoomTrap generatedRoomTrap = new RoomTrap(	"No Trap",0,0,0);
+
+            roomTrapList.add(generatedRoomTrap);
+    }
+
+
+    //ACESSOR
+    public static RoomTrap GetTrapFromList(int index){
+        return roomTrapList.get(index);
+    }
+
+    public static  RoomTrap GetRandomTrap(){
+        return roomTrapList.get(Util.GenerateNumberBetween(0,roomTrapList.size()));
+    }
+
+    public int GetTrapListLength(){
+        return roomTrapList.size();
+    }
+
 
 	//AUX FUNCTS
-    private String GenerateTrapName(){
-		
-        String generatedTrapName="";
-        int trapNamePrefixNumber = GenerateNumberBetween(0,trapNamePrefix.length);
-        int trapNameNumber = GenerateNumberBetween(0,trapName.length);
-        int trapNameSuffixNumber = GenerateNumberBetween(0,trapNameSuffix.length);
-
-        //for version 26 only // generatedTrapName = String.join(" ",trapNamePrefix[trapNamePrefixNumber],trapName[trapNameNumber],trapNameSuffix[trapNameSuffixNumber]);
-        generatedTrapName = trapNamePrefix[trapNamePrefixNumber]+" "+trapName[trapNameNumber]+" "+trapNameSuffix[trapNameSuffixNumber];
 
 
-        return generatedTrapName;
-    }
 
-    private int GenerateNumberBetween(int _min, int _max){
-        Random r = new Random();
-        int result = r.nextInt(_max-_min) + _min;
-        return result;
-    }
 
 }

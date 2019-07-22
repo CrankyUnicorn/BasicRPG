@@ -8,12 +8,15 @@ import java.util.Random;
 import com.example.basicrpg.DungeonNameGenerator;
 import com.example.basicrpg.Util;
 
+
+
+
 public class Dungeon {
 
 
     private String dungeonName;
 
-
+    private int dungeonId;
 
     private int dungeonTotalLevels;
     private int dungeonTotalSections;
@@ -29,7 +32,7 @@ public class Dungeon {
     //CONSTRUCTOR
    Dungeon(String _dungeonName, int _dungeonLevels, int _dungeonSections, int _dungeonRooms){
 
-       dungeonName = DungeonNameGenerator.GenerateDungeonName();
+       dungeonName = _dungeonName == "" ? DungeonNameGenerator.GenerateDungeonName() : _dungeonName;
 
        dungeonTotalLevels = _dungeonLevels < 1 ? 1 : _dungeonLevels ;
 
@@ -37,13 +40,15 @@ public class Dungeon {
 
        dungeonTotalRooms = _dungeonRooms < dungeonTotalSections ? dungeonTotalSections : _dungeonRooms;
 
-       SetDungeon();
+       PopulatorDungeonList();
     }
 
+    //CONSTRUCTOR OVERLOAD
     Dungeon(){}
 
-    //SETTER
-    private void SetDungeon(){
+
+    //LIST POPULATOR
+    private void PopulatorDungeonList(){
 
         int sectorRemainder = dungeonTotalSections;
 
@@ -67,6 +72,7 @@ public class Dungeon {
 
     //ACESSORS
 
+
     //NAME ACESSOR
     public void SetDungeonName(String _dungeonName){
 
@@ -80,6 +86,21 @@ public class Dungeon {
     public String GetDungeonName(){
 
         return dungeonName;
+    }
+
+    //ID ACESSOR
+    public void SetDungeonId(int _dungeonId){
+
+        if(dungeonId==0){
+
+            dungeonId = _dungeonId;
+        }
+
+    }
+
+    public int GetDungeonId(){
+
+        return dungeonId;
     }
 
 

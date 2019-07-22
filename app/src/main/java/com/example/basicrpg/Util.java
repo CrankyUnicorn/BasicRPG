@@ -1,5 +1,7 @@
 package com.example.basicrpg;
 
+import android.util.Log;
+
 import java.util.Random;
 
 public class Util {
@@ -17,6 +19,10 @@ public class Util {
     public static int GetId(){
 
         currentID++;
+
+        if(currentID==Integer.MAX_VALUE){
+            Log.d("Alert: Max Value", String.valueOf(currentID));
+        }
 
         return currentID;
     }

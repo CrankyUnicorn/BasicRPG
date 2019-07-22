@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomsList {
+    private static final RoomsList ourInstance = new RoomsList(GameSettings.roomTypes);//
 
+    public static RoomsList getInstance() {
+        return ourInstance;
+    }
 
     private List<DungeonRoom> roomsList = new ArrayList<DungeonRoom>();
 
     private int numberOfRooms;
 
     //CONSTRUCTOR OVERLOAD
-    RoomsList(int _numberOfRooms){
+    private RoomsList(int _numberOfRooms){
 
         numberOfRooms = _numberOfRooms;
 
@@ -20,14 +24,14 @@ public class RoomsList {
     }
 
     //ACESSOR
-    public DungeonRoom GetDungeonRoomById(int _id){
+    public DungeonRoom CloneDungeonRoomById(int _id){
         DungeonRoom selectedRoom = new DungeonRoom();
 
         for(DungeonRoom room : roomsList){
             if(room.RoomID() == _id){
 
                 selectedRoom = new DungeonRoom( room.ThisRoomTrap(),
-                                                room.RoomID(),
+                                                Util.GetId(),
                                                 room.RoomName(),
                                                 room.RoomDescription(),
                                                 room.RoomExitsId(),
@@ -44,7 +48,7 @@ public class RoomsList {
     public DungeonRoom GetDungeonRoomByIndex(int _index){
         DungeonRoom selectedRoom = null;
 
-        if(_index <= roomsList.size()){
+        if(_index < roomsList.size()){
 
             DungeonRoom room = roomsList.get(_index);
 
@@ -59,29 +63,63 @@ public class RoomsList {
     }
 
     //AUX
+    public DungeonRoom GetRandomRoom(){
+        DungeonRoom selectedRoom = null;
+
+        selectedRoom = roomsList.get(Util.GenerateNumberBetween(1, roomsList.size()));
+
+        return selectedRoom;
+    }
+
+    //AUX BUILDER
     private void GenerateRooms(int _numberOfRooms){
+
+        GenerateInitialRooms();
 
         for (int i = 0; i <_numberOfRooms; i++){
 
+            int[] entranceDoors=null;
+            String[] entranceDoorsDescription=null;
+
+
+
             DungeonRoom DungeonRoomOut = new DungeonRoom(
-                    room.ThisRoomTrap(),
-                    room.RoomID(),
-                    room.RoomName(),
-                    room.RoomDescription(),
-                    room.RoomExitsId(),
-                    room.RoomExitsNames()
+                    TrapsList.GetRandomTrap(),
+                    Util.GetId(),
+                    DungeonNameGenerator.GenerateRoomName(),
+                    DungeonNameGenerator.GenerateRoomDescription(),
+                    entranceDoors,
+                    entranceDoorsDescription
             );
 
             roomsList.add(DungeonRoomOut);
         }
     }
 
-    //AUX
+    private void GenerateInitialRooms(){
+
+        int[] entranceDoors = {1,2,3};
+        String[] entranceDoorsDescription = {"Path to the left","Down the stairs","Go back"};
+
+            DungeonRoom DungeonRoomOut = new DungeonRoom(
+                    TrapsList.GetTrapFromList(0),
+                    Util.GetId(),
+                    "Entrance",
+                    "You find yourself at the entrance of a Dungeon",
+                    entranceDoors,
+                    entranceDoorsDescription
+            );
+
+            roomsList.add(DungeonRoomOut);
+
+    }
+
+    //AUX CLONER
     private DungeonRoom CloneDungeonRoom (DungeonRoom room){
 
         DungeonRoom DungeonRoomOut = new DungeonRoom(
                 room.ThisRoomTrap(),
-                room.RoomID(),
+                Util.GetId(),
                 room.RoomName(),
                 room.RoomDescription(),
                 room.RoomExitsId(),

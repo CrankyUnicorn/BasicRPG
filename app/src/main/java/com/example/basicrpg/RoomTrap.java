@@ -52,6 +52,7 @@ public class RoomTrap implements IRoomTrap {
         trapToDisarm = _trapToDisarm;
     }
 
+    RoomTrap(){}
 
     //TIGGERS
     @Override
