@@ -7,7 +7,7 @@ public class DungeonMap {
         return ourInstance;
     }
 
-    public Dungeon currentDungeon = null;
+    public static Dungeon currentDungeon = null;
 
 
 

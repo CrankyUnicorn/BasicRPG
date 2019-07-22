@@ -11,48 +11,87 @@
     tools:context="com.example.basicrpg.MainActivity">
 
     <TextView
-        android:id="@+id/label"
+        android:id="@+id/dungeonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:text="Hello World!" />
+        android:text="DungeonName" />
+
+    <TextView
+        android:id="@+id/dungeonLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dungeonName"
+        android:layout_margin="4dp"
+        android:text="DungeonLocation" />
+
+    <TextView
+        android:id="@+id/roomDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dungeonLocation"
+        android:layout_margin="4dp"
+        android:text="RoomDescription" />
+
+
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/dungeonImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/label"
+        android:layout_below="@+id/roomDescription"
         android:layout_centerHorizontal="true"
         android:layout_margin="4dp"
-        android:src="@drawable/dice1" />
+        android:contentDescription="View"
+        android:src="@drawable/ic_launcher_background" />
 
     <Button
-        android:id="@+id/roll"
+        android:id="@+id/buttonOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/dungeonImageView"
         android:layout_margin="4dp"
-        android:onClick="rollButtonClick"
-        android:text="Roll" />
+        android:onClick="buttonOneClick"
+        android:text="ButtonOne" />
 
     <Button
-        android:id="@+id/hold"
+        android:id="@+id/buttonTwo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:onClick="holdButtonClick"
+        android:layout_below="@+id/dungeonImageView"
+        android:onClick="buttonTwoClick"
         android:layout_margin="4dp"
-        android:layout_toRightOf="@+id/roll"
-        android:text="Hold" />
+        android:layout_toRightOf="@+id/buttonOne"
+        android:text="ButtonTwo" />
 
     <Button
-        android:id="@+id/reset"
+        android:id="@+id/buttonThree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="resetButtonClick"
-        android:layout_below="@+id/imageView"
+        android:onClick="buttonThreeClick"
+        android:layout_below="@+id/dungeonImageView"
         android:layout_margin="4dp"
-        android:layout_toRightOf="@+id/hold"
-        android:text="Reset" />
+        android:layout_toRightOf="@+id/buttonTwo"
+        android:text="ButtonThree" />
+
+    <TextView
+        android:id="@+id/characterStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonThree"
+        android:layout_margin="4dp"
+        android:text="CharacterStats" />
+
+    <TextView
+        android:id="@+id/characterInventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/characterStats"
+        android:layout_margin="4dp"
+        android:text="CharacterInventory" />
+
+
+
+
 
 </RelativeLayout>

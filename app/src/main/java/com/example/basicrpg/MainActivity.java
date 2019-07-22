@@ -21,21 +21,19 @@ public class MainActivity extends AppCompatActivity {
 
     Timer myTimer;
 
-    public int userOverallScore = 0, userTurnScore = 0;
-    public int computerOverallScore = 0, computerTurnScore = 0;
+    TextView dungeonNameTitle;
+    TextView dungeonLocationTitle;
+    TextView dungeonRoomDescriptionTitle;
+    ImageView dungeonImageView;
 
-    Button rollButton, holdButton;
-    TextView label;
-    ImageView imageView;
+    Button doorOneButton;
+    Button doorTwoButton;
+    Button doorThreeButton;
 
-    String userScoreLabel = "<b><i>Your score : </i></b>";
-    String compScoreLabel = "<b><i> Computer score : </i></b>";
-    String userTurnScoreLabel = "<b><i> Your turn score : </i></b>";
-    String compTurnScoreLabel = "\n<b><i>computer turn score : </i></b>";
+    TextView characterStatsTitle;
+    TextView characterInventoryTitle;
 
-    String labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore;
-
-    int[] drawables = { R.drawable.dice1,
+    int[] diceDrawables = { R.drawable.dice1,
                         R.drawable.dice2,
                         R.drawable.dice3,
                         R.drawable.dice4,
@@ -49,35 +47,72 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rollButton = (Button) findViewById(R.id.roll);
-        holdButton = (Button) findViewById(R.id.hold);
-        label = (TextView) findViewById(R.id.label);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        dungeonNameTitle = (TextView) findViewById(R.id.dungeonName);
 
-        label.setText(Html.fromHtml(labelText));
+        dungeonLocationTitle = (TextView) findViewById(R.id.dungeonLocation);
+        dungeonRoomDescriptionTitle = (TextView) findViewById(R.id.roomDescription);
 
+        dungeonImageView = (ImageView) findViewById(R.id.dungeonImageView);
+
+        doorOneButton = (Button) findViewById(R.id.buttonOne);
+        doorTwoButton = (Button) findViewById(R.id.buttonTwo);
+        doorThreeButton = (Button) findViewById(R.id.buttonThree);
+
+        characterStatsTitle = (TextView) findViewById(R.id.characterStats);
+        characterInventoryTitle = (TextView) findViewById(R.id.characterInventory);
     }
+
+    public void buttonOneClick(View view){
+        //changeState
+        outputContent();
+    }
+    public void buttonTwoClick(View view){
+        outputContent();
+    }
+    public void buttonThreeClick(View view){
+        outputContent();
+    }
+
+    private void outputContent(){
+
+        dungeonNameTitle.setText("");
+
+        dungeonLocationTitle.setText("");
+        dungeonRoomDescriptionTitle.setText("");
+
+        dungeonImageView.setImageResource(diceDrawables[1]);
+
+        doorOneButton.setText("");
+        doorTwoButton.setText("");
+        doorThreeButton.setText("");
+
+        characterStatsTitle.setText("");
+        characterInventoryTitle.setText("");
+    }
+
 
     public void rollButtonClick(View view) {
 
-        Log.d(TAG, "rollButtonClick called ");
-
         int rolledNumber = rollDice();
-        imageView.setImageResource(drawables[rolledNumber]);
+
+        //imageView.setImageResource(diceDrawables [rolledNumber]);
+
         rolledNumber++;
 
         if (rolledNumber == 1) {
-            userTurnScore = 0;
-            labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore + "\n you lost your chance";
-            computerTurn();
-        } else {
-            userTurnScore += rolledNumber;
-            labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore;
+            //crititical fail
+
+        } else if (rolledNumber == 6) {
+            //critical good
+
+        } else{
+            //depends on the value but lets assume is nor good nor bad
         }
-        label.setText(Html.fromHtml(labelText));
 
     }
 
+
+    /*
     public void computerTurn() {
 
 
@@ -187,87 +222,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+*/
 
 
-
-    /*private void computerTurn() {
-        Log.d(TAG, "computerTurn called ");
-        //disable all the buttons first
-        enableButtons(false);
-        //infinite loop until computer loses turn
-        while (true) {
-            //roll dice by comp
-            int computerRolledNumber = rollDice();
-            imageView.setImageResource(drawables[computerRolledNumber]);
-            computerRolledNumber++;
-            Log.d(TAG, "computerTurn: " + computerRolledNumber);
-            //if comp rolled 1, make the turnScore 0, update the labels and enable the buttons
-            if (computerRolledNumber == 1) {
-                computerTurnScore = 0;
-                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
-                        + "\n computer rolled a one and lost it's chance";
-                enableButtons(true);
-                label.setText(Html.fromHtml(labelText));
-                return;
-            }
-            //else add the score to turnScore and update the label
-            else {
-                computerTurnScore += computerRolledNumber;
-                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
-                        + "\nComputer rolled a " + computerRolledNumber;
-                label.setText(Html.fromHtml(labelText));
-            }
-            //hold strategy for comp...if turnScore is > 20 then hold and save the turnScore and exit from this function, also enable the buttons
-            if (computerTurnScore > 20) {
-                computerOverallScore += computerTurnScore;
-                computerTurnScore = 0;
-                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + "\n" +
-                        "Computer holds";
-                label.setText(Html.fromHtml(labelText));
-                enableButtons(true);
-                return;
-            }
-        }
-    }*/
-
-    public void holdButtonClick(View view) {
-
-        userOverallScore += userTurnScore;
-        userTurnScore = 0;
-
-        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore;
-        label.setText(Html.fromHtml(labelText));
-
-
-        computerTurn();
-    }
-
-    public void resetButtonClick(View view) {
-
-        userOverallScore = 0;
-        userTurnScore = 0;
-        computerOverallScore = 0;
-        computerTurnScore = 0;
-
-        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore;
-        label.setText(Html.fromHtml(labelText));
-
-        enableButtons(true);
-
-    }
 
     private int rollDice() {
 
         Random random = new Random();
         int randomNumber = random.nextInt(6);
-        Log.d(TAG, "rollBtnClick: " + randomNumber);
-
         return randomNumber;
 
     }
 
+
     private void enableButtons(boolean isEnabled) {
-        rollButton.setEnabled(isEnabled);
-        holdButton.setEnabled(isEnabled);
+        doorOneButton.setEnabled(isEnabled);
+        doorTwoButton.setEnabled(isEnabled);
+        doorThreeButton.setEnabled(isEnabled);
     }
 }
