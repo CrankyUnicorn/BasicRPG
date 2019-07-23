@@ -1,27 +1,46 @@
 package com.example.basicrpg;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.example.basicrpg.Util;
 
 public class DungeonLevel {
 
-    private String levelName;
+    private String dungeonLevelName;
+
+    public String GetDungeonLevelName() {
+        return dungeonLevelName;
+    }
 
     private int dungeonLevelId;
 
+    public int GetDungeonLevelId() {
+        return dungeonLevelId;
+    }
+
     private int numberOfSections;
+
+    public int GetNumberOfSections() {
+        return numberOfSections;
+    }
 
     private int numberOfRooms;
 
+    public int GetNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    private List<DungeonSection> thisDungeonLevelSections = new ArrayList<DungeonSection>();
+
+    public List<DungeonSection> GetChildList(){return thisDungeonLevelSections;}
 
 
-    public List<DungeonSection> thisDungeonSection = new ArrayList<DungeonSection>();
-
-    //CONSTRUCTOR OVERLOAD
+        //CONSTRUCTOR OVERLOAD
     DungeonLevel( int _numberOfSections, int _numberOfRooms){
 
-        levelName = DungeonNameGenerator.GenerateLevelName();
+        dungeonLevelName = DungeonNameGenerator.GenerateLevelName();
         dungeonLevelId = Util.GetId();
         numberOfSections = _numberOfSections;
         numberOfRooms = _numberOfRooms;
@@ -38,13 +57,23 @@ public class DungeonLevel {
         int roomRemainder = numberOfRooms;
 
 
-        for (int i = 0; i <numberOfSections; i++) {
+        for (int i = numberOfSections-1; i >=1; i--) {
+            int sectionRooms;
+            Log.d("SectionsList","Create Section!");
+            if(i>0) {
+                 sectionRooms = Util.GenerateNumberBetween(1, roomRemainder - i);
 
-            int levelRooms = Util.GenerateNumberBetween(1,roomRemainder-(numberOfRooms-i));
+            }else{
+                sectionRooms = roomRemainder;
+            }
 
-            DungeonSection iDungeonSector = new DungeonSection(levelRooms);
+            Log.d("SectionRooms", String.valueOf(sectionRooms));
 
-            thisDungeonSection.add(iDungeonSector);
+            roomRemainder -= sectionRooms;
+
+            DungeonSection iDungeonSector = new DungeonSection(sectionRooms);
+
+            thisDungeonLevelSections.add(iDungeonSector);
         }
 
     }

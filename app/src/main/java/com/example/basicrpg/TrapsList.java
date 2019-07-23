@@ -1,10 +1,14 @@
 package com.example.basicrpg;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TrapsList {
+
+    private static List<RoomTrap> roomTrapList = new ArrayList<RoomTrap>();
 
     private static final TrapsList ourInstance = new TrapsList(GameSettings.trapTypes);//
 
@@ -12,7 +16,7 @@ public class TrapsList {
         return ourInstance;
     }
 
-    private static List<RoomTrap> roomTrapList = new ArrayList<RoomTrap>();
+
 
 
 
@@ -35,7 +39,7 @@ public class TrapsList {
 
     private void NoTrap(){
 
-            RoomTrap generatedRoomTrap = new RoomTrap(	"No Trap",0,0,0);
+            RoomTrap generatedRoomTrap = new RoomTrap("No Trap",0,0,0);
 
             roomTrapList.add(generatedRoomTrap);
     }
@@ -47,7 +51,8 @@ public class TrapsList {
     }
 
     public static  RoomTrap GetRandomTrap(){
-        return roomTrapList.get(Util.GenerateNumberBetween(0,roomTrapList.size()));
+        Log.d("TrapList","Create Trap!");
+        return roomTrapList.get(Util.GenerateNumberBetween(0,roomTrapList.size()-1));
     }
 
     public int GetTrapListLength(){

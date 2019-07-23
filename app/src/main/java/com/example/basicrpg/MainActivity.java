@@ -63,33 +63,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonOneClick(View view){
-        //changeState
+        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(0);
         outputContent();
     }
     public void buttonTwoClick(View view){
+        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(1);
         outputContent();
     }
     public void buttonThreeClick(View view){
+        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(2);
         outputContent();
     }
 
     private void outputContent(){
 
-        dungeonNameTitle.setText("");
+        dungeonNameTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonNameTitle());
 
-        dungeonLocationTitle.setText("");
-        dungeonRoomDescriptionTitle.setText("");
+        dungeonLocationTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonLocationTitle());
+        dungeonRoomDescriptionTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomDescriptionTitle());
 
         dungeonImageView.setImageResource(diceDrawables[1]);
 
-        doorOneButton.setText("");
-        doorTwoButton.setText("");
-        doorThreeButton.setText("");
+        doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorOneButtonTitle());
+        doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorTwoButtonTitle());
+        doorThreeButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorThreeButtonTitle());
 
-        characterStatsTitle.setText("");
-        characterInventoryTitle.setText("");
+        characterStatsTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterStatsTitle());
+        characterInventoryTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterInventoryTitle());
     }
-
 
     public void rollButtonClick(View view) {
 
@@ -109,6 +110,21 @@ public class MainActivity extends AppCompatActivity {
             //depends on the value but lets assume is nor good nor bad
         }
 
+    }
+
+    private int rollDice() {
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(6);
+        return randomNumber;
+
+    }
+
+
+    private void enableButtons(boolean isEnabled) {
+        doorOneButton.setEnabled(isEnabled);
+        doorTwoButton.setEnabled(isEnabled);
+        doorThreeButton.setEnabled(isEnabled);
     }
 
 
@@ -223,21 +239,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 */
-
-
-
-    private int rollDice() {
-
-        Random random = new Random();
-        int randomNumber = random.nextInt(6);
-        return randomNumber;
-
-    }
-
-
-    private void enableButtons(boolean isEnabled) {
-        doorOneButton.setEnabled(isEnabled);
-        doorTwoButton.setEnabled(isEnabled);
-        doorThreeButton.setEnabled(isEnabled);
-    }
 }

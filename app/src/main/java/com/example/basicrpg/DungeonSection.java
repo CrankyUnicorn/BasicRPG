@@ -8,15 +8,36 @@ public class DungeonSection {
 
     private int dungeonSectionId;
 
+    public int GetDungeonSectionId() {
+        return dungeonSectionId;
+    }
+
+    private String dungeonSectionName;
+
+    public String GetDungeonSectionName() {
+        return dungeonSectionName;
+    }
+
     private int numberOfRooms;
+
+    public int GetNumberOfRooms() {
+        return numberOfRooms;
+    }
+
 
     public List<DungeonRoom> thisDungeonSection = new ArrayList<DungeonRoom>();
 
+    public List<DungeonRoom> GetChildList() {
+        return thisDungeonSection;
+    }
 
     //CONSTRUCTOR OVERLOAD
     DungeonSection( int _numberOfRooms){
 
         numberOfRooms = _numberOfRooms;
+
+        dungeonSectionName = DungeonNameGenerator.GenerateLevelName();
+
         dungeonSectionId = Util.GetId();
 
         SetDungeonSection(_numberOfRooms);

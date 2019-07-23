@@ -1,6 +1,9 @@
 package com.example.basicrpg;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoomsList {
@@ -14,13 +17,16 @@ public class RoomsList {
 
     private int numberOfRooms;
 
+
     //CONSTRUCTOR OVERLOAD
     private RoomsList(int _numberOfRooms){
 
-        numberOfRooms = _numberOfRooms;
+        numberOfRooms = _numberOfRooms+1;
 
 
         GenerateRooms(_numberOfRooms);
+
+
     }
 
     //ACESSOR
@@ -64,11 +70,11 @@ public class RoomsList {
 
     //AUX
     public DungeonRoom GetRandomRoom(){
-        DungeonRoom selectedRoom = null;
 
-        selectedRoom = roomsList.get(Util.GenerateNumberBetween(1, roomsList.size()));
 
-        return selectedRoom;
+        DungeonRoom selectedRoom = roomsList.get(Util.GenerateNumberBetween(1, roomsList.size()));
+
+        return CloneDungeonRoom(selectedRoom);
     }
 
     //AUX BUILDER
@@ -94,6 +100,11 @@ public class RoomsList {
 
             roomsList.add(DungeonRoomOut);
         }
+
+        Log.d("Generated Rooms ","Done!");
+        Log.d("RoomList Q:", String.valueOf(roomsList.size()));
+        Log.d("Room Zero Ids: ", Arrays.toString(roomsList.get(0).RoomExitsId()));
+        Log.d("Room Zero Names : ", Arrays.toString(roomsList.get(0).RoomExitsNames()));
     }
 
     private void GenerateInitialRooms(){

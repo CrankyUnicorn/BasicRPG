@@ -1,6 +1,8 @@
 package com.example.basicrpg;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,20 +52,37 @@ public class Dungeon {
     //LIST POPULATOR
     private void PopulatorDungeonList(){
 
-        int sectorRemainder = dungeonTotalSections;
+        int sectionsRemainder = dungeonTotalSections;
 
         int roomRemainder = dungeonTotalRooms;
 
 
-        for (int i = 0; i <dungeonTotalLevels; i++) {
+        for (int i = dungeonTotalLevels-1; i >=0; i--) {
 
-            int levelSectors = Util.GenerateNumberBetween(1,sectorRemainder-(dungeonTotalSections-i));
-            int levelRooms = Util.GenerateNumberBetween(1,roomRemainder-(dungeonTotalSections-i));
+            int levelSections;
+            int levelRooms;
+            Log.d("Levels","Create Level!");
+            if(i>0) {
 
-            sectorRemainder -= levelSectors;
+                levelSections = Util.GenerateNumberBetween(1, sectionsRemainder - i);
+                levelRooms = Util.GenerateNumberBetween(levelSections, roomRemainder - (sectionsRemainder - levelSections));
+
+            }else{
+                levelSections = sectionsRemainder;
+                levelRooms = roomRemainder;
+            }
+            Log.d("levelSectors", String.valueOf(levelSections));
+            Log.d("levelRooms", String.valueOf(levelRooms));
+
+            sectionsRemainder -= levelSections;
             roomRemainder -= levelRooms;
 
-            DungeonLevel iDungeonLevel = new DungeonLevel(levelSectors, levelRooms);
+            //Log.d("levelSectors=", String.valueOf(levelSectors));
+            //Log.d("levelRooms=", String.valueOf(levelRooms));
+            //Log.d("sectorRemainder=", String.valueOf(sectorRemainder));
+            //Log.d("roomRemainder=", String.valueOf(roomRemainder));
+
+            DungeonLevel iDungeonLevel = new DungeonLevel(levelSections, levelRooms);
 
             listDungeonLevels.add(iDungeonLevel);
         }
@@ -71,7 +90,8 @@ public class Dungeon {
     }
 
     //ACESSORS
-
+//
+    public List<DungeonLevel> GetChildList(){return listDungeonLevels;}
 
     //NAME ACESSOR
     public void SetDungeonName(String _dungeonName){
