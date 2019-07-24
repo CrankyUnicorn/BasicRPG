@@ -1,16 +1,12 @@
 package com.example.basicrpg;
 
-
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
-import com.example.basicrpg.DungeonNameGenerator;
-import com.example.basicrpg.Util;
-
-
 
 
 public class Dungeon {
@@ -18,7 +14,7 @@ public class Dungeon {
 
     private String dungeonName;
 
-    private int dungeonId;
+    private String dungeonCreation;
 
     private int dungeonTotalLevels;
     private int dungeonTotalSections;
@@ -28,186 +24,116 @@ public class Dungeon {
     private int dungeonTotalSectionsExplored;
     private int dungeonTotalRoomsExplored;
 
-    private List<DungeonLevel> listDungeonLevels = new ArrayList<DungeonLevel>();
+    private List<DungeonLevel> childLevels = new ArrayList<DungeonLevel>();
+
+    //private List<DungeonLevel> listDungeonLevels = new ArrayList<DungeonLevel>();
+    //private List<DungeonSection> listDungeonSections = new ArrayList<DungeonSection>();
+    private List<DungeonRoom> listDungeonRooms = new ArrayList<DungeonRoom>();
 
 
     //CONSTRUCTOR
-   Dungeon(String _dungeonName, int _dungeonLevels, int _dungeonSections, int _dungeonRooms){
+   Dungeon(){
 
-       dungeonName = _dungeonName == "" ? DungeonNameGenerator.GenerateDungeonName() : _dungeonName;
+       VerifyDungeonList();
 
-       dungeonTotalLevels = _dungeonLevels < 1 ? 1 : _dungeonLevels ;
-
-       dungeonTotalSections = _dungeonSections < _dungeonLevels ? _dungeonLevels : _dungeonSections;
-
-       dungeonTotalRooms = _dungeonRooms < dungeonTotalSections ? dungeonTotalSections : _dungeonRooms;
-
-       PopulatorDungeonList();
+       CreateDungeonLevels();
     }
 
-    //CONSTRUCTOR OVERLOAD
-    Dungeon(){}
+
+    //VERIFIER
+    private void VerifyDungeonList(){
+
+        dungeonName = GameSettings.dungeonName.isEmpty() ? DungeonNameGenerator.GenerateDungeonName() : GameSettings.dungeonName;
+
+        dungeonTotalLevels = GameSettings.dungeonLevels < 1 ? 1 : GameSettings.dungeonLevels;
+
+        dungeonTotalSections = GameSettings.dungeonSections < dungeonTotalLevels ? dungeonTotalLevels: GameSettings.dungeonSections;
+
+        dungeonTotalRooms = GameSettings.dungeonRooms < dungeonTotalSections ? dungeonTotalSections : GameSettings.dungeonRooms;
+
+    }
 
 
-    //LIST POPULATOR
-    private void PopulatorDungeonList(){
+    //CREATE DUNGEON STRUCTURE
+    private void CreateDungeonLevels(){
 
         int sectionsRemainder = dungeonTotalSections;
-
         int roomRemainder = dungeonTotalRooms;
 
 
         for (int i = dungeonTotalLevels-1; i >=0; i--) {
 
+            Log.d("Levels","Create Level!");
+
             int levelSections;
             int levelRooms;
-            Log.d("Levels","Create Level!");
+
+
             if(i>0) {
 
                 levelSections = Util.GenerateNumberBetween(1, sectionsRemainder - i);
                 levelRooms = Util.GenerateNumberBetween(levelSections, roomRemainder - (sectionsRemainder - levelSections));
 
             }else{
+
                 levelSections = sectionsRemainder;
                 levelRooms = roomRemainder;
             }
-            Log.d("levelSectors", String.valueOf(levelSections));
-            Log.d("levelRooms", String.valueOf(levelRooms));
 
             sectionsRemainder -= levelSections;
             roomRemainder -= levelRooms;
 
-            //Log.d("levelSectors=", String.valueOf(levelSectors));
-            //Log.d("levelRooms=", String.valueOf(levelRooms));
-            //Log.d("sectorRemainder=", String.valueOf(sectorRemainder));
-            //Log.d("roomRemainder=", String.valueOf(roomRemainder));
+            //Log.d("levelSectors", String.valueOf(levelSectors));
+            //Log.d("levelRooms", String.valueOf(levelRooms));
+            //Log.d("sectorRemainder", String.valueOf(sectorRemainder));
+            //Log.d("roomRemainder", String.valueOf(roomRemainder));
 
-            DungeonLevel iDungeonLevel = new DungeonLevel(levelSections, levelRooms);
 
-            listDungeonLevels.add(iDungeonLevel);
+            childLevels.add(new DungeonLevel(levelSections,levelRooms));
         }
 
     }
 
     //ACESSORS
-//
-    public List<DungeonLevel> GetChildList(){return listDungeonLevels;}
+    //CHILD LIST ACESSOR
+    public List<DungeonLevel> GetChildLevels(){return childLevels;}
+
+    //ROOM LIST ACESSOR
+    public void SetDungeonRooms(DungeonRoom _room){listDungeonRooms.add(_room);}
+    public List<DungeonRoom> GetDungeonRooms(){return listDungeonRooms;}
+
 
     //NAME ACESSOR
     public void SetDungeonName(String _dungeonName){
 
-        if(dungeonName==null){
+        if(dungeonName.isEmpty()){
 
             dungeonName = _dungeonName;
         }
 
     }
 
-    public String GetDungeonName(){
+    public String GetDungeonName(){return dungeonName;}
 
-        return dungeonName;
-    }
+    //Creation ACESSOR
+    public void SetDungeonCreation(){
 
-    //ID ACESSOR
-    public void SetDungeonId(int _dungeonId){
-
-        if(dungeonId==0){
-
-            dungeonId = _dungeonId;
+        if(dungeonCreation.isEmpty()){
+            Date nowDate = new Date();
+            DateFormat thisDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            dungeonCreation = thisDateFormat.format(nowDate);
         }
 
     }
 
-    public int GetDungeonId(){
+    public String GetDungeonCreation(){return dungeonCreation;}
 
-        return dungeonId;
-    }
+    //EXPLORED
+    public int GetDungeonTotalLevelsExplored(){return dungeonTotalLevelsExplored;}
 
+    public int GetDungeonTotalSectionsExplored(){return dungeonTotalSectionsExplored;}
 
-    //DungeonTotalLevels ACESSOR
-    public void SetDungeonTotalLevels(int _dungeonTotalLevels){
-
-        if(dungeonTotalLevels==0){
-
-            dungeonTotalLevels = _dungeonTotalLevels;
-        }else{}
-
-    }
-
-    public int GetDungeonTotalLevels(){
-
-        //maybe usefull to recalculate all the levels on demand
-        return dungeonTotalLevels;
-    }
-
-
-    //DungeonTotalSections ACESSOR
-    public void SetDungeonTotalSections(int _dungeonTotalSections){
-
-        if(dungeonTotalSections == 0){
-
-            dungeonTotalSections = _dungeonTotalSections;
-        }
-    }
-
-    public int GetDungeonTotalSections(){
-
-        //maybe usefull to recalculate all the sections on demand
-        return dungeonTotalSections;
-    }
-
-
-    //DungeonTotalRooms ACESSOR
-    public void SetDungeonTotalRooms(int _dungeonTotalRooms){
-
-        if(dungeonTotalRooms == 0 ){
-
-            dungeonTotalRooms = _dungeonTotalRooms;
-        }
-
-    }
-
-    public int GetDungeonTotalRooms(){
-
-        //maybe usefull to recalculate all the rooms on demand
-        return dungeonTotalRooms;
-    }
-
-
-    //DungeonTotalLevelsExplored ACESSOR
-    public void SetDungeonTotalLevelsExplored(int _dungeonTotalLevelsExplored){
-
-        dungeonTotalLevelsExplored = _dungeonTotalLevelsExplored;
-    }
-
-    public int GetDungeonTotalLevelsExplored(){
-
-        return dungeonTotalLevelsExplored;
-    }
-
-
-    //DungeonTotalSectionsExplored ACESSOR
-    public void SetDungeonTotalSectionsExplored(int _dungeonTotalSectionsExplored){
-
-        dungeonTotalSectionsExplored = _dungeonTotalSectionsExplored;
-    }
-
-    public int GetDungeonTotalSectionsExplored(){
-
-        return dungeonTotalSectionsExplored;
-    }
-
-
-    //DungeonTotalRoomsExplored ACESSOR
-    public void SetDungeonTotalRoomsExplored(int _dungeonTotalRoomsExplored){
-
-        dungeonTotalRoomsExplored = _dungeonTotalRoomsExplored;
-    }
-
-    public int GetDungeonTotalRoomsExplored(){
-
-        return dungeonTotalRoomsExplored;
-    }
+    public int GetDungeonTotalRoomsExplored(){return dungeonTotalRoomsExplored;}
 
 
 

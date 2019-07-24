@@ -1,19 +1,42 @@
+/*
+* AUTHOR : CRANKYUNICORN
+* LAST UPDATED : NEVER
+*
+*
+*/
+
 package com.example.basicrpg;
 
-public class DungeonMap {
+class DungeonMap {
+
     private static final DungeonMap DUNGEON_MAP = new DungeonMap();
 
-    public static DungeonMap GetDungeonMap() {
-        return DUNGEON_MAP;
+    static DungeonMap GetDungeonMap() { return DUNGEON_MAP; }
+
+
+    private Dungeon currentDungeon = null;
+
+    public Dungeon GetCurrentDungeon() {return currentDungeon;}
+
+
+    private void CreateNewDungeon(){
+        currentDungeon = new Dungeon();
     }
 
-    private static Dungeon currentDungeon = new Dungeon(
-            GameSettings.dungeonName,
-            GameSettings.dungeonLevels,
-            GameSettings.dungeonSections,
-            GameSettings.dungeonRooms);
+    private void LoadDungeon(int slot) {
+        //loads dungeon based on passed arguments
+    }
 
-    public static Dungeon GetCurrentDungeon() {return currentDungeon;}
+    private DungeonMap() {
+        //if argument present load from file if not create a map
+        if(false){//load argument present
+            //load
+            LoadDungeon(0);
+        }else{
+            //create dungeon
+            CreateNewDungeon();
+        }
+    }
 
-    private DungeonMap() {}
+
 }
