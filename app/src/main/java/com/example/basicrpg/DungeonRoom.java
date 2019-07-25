@@ -54,12 +54,40 @@ public class DungeonRoom{
 
 	public boolean RoomExplored(){ return roomExplored;	}
 
-	public int[] RoomExitsId(){
+
+
+	//---EXITS---
+	public void SetRoomExitsId(int _id , int _index){
+		if(_index<roomExitsId.length){
+		roomExitsId[_index] = _id;}
+	}
+
+	public int[] GetRoomExitsId(){
 		return roomExitsId;
 	}
+
+
+	public int GetRoomExitsIdByIndex(int _index){
+		if(_index<roomExitsId.length){
+			return roomExitsId[_index];
+		}
+		return roomExitsId[0];
+	}
+
+	//---NAMES---
+	public void SetRoomExitsNames(String _string , int _index){
+		if(_index<roomExitsNames.length){
+		roomExitsNames[_index] = _string;}
+	}
 	
-	public String[] RoomExitsNames(){
+	public String[] GetRoomExitsNames(){
 		return roomExitsNames;
+	}
+
+	public String GetRoomExitsNamesByIndex(int _index){
+		if(_index<roomExitsNames.length){
+		return roomExitsNames[_index];}
+		return roomExitsNames[0];
 	}
 
 

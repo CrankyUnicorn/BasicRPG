@@ -41,6 +41,7 @@ public class DungeonLevel {
     public List<DungeonSection> GetChildSections(){return childSections;}
 
 
+
         //CONSTRUCTOR OVERLOAD
     DungeonLevel( int _numberOfSections, int _numberOfRooms){
 
@@ -54,17 +55,18 @@ public class DungeonLevel {
 
     DungeonLevel(){}
 
+
     private void setDungeonLevel(){
 
         int roomRemainder = numberOfRooms;
 
-        for (int i = numberOfSections-1; i >=1; i--) {
+        for (int i = numberOfSections-1; i >=0; i--) {
 
             Log.d("SectionsList","Create Section!");
 
             int sectionRooms;
 
-            if(i>0) {
+            if(i > 0) {
 
                  sectionRooms = Util.GenerateNumberBetween(1, roomRemainder - i);
 

@@ -23,25 +23,56 @@ class Player {
     private int playerDungeonSectionLocation;
     private int playerDungeonRoomLocation;
 
+    private int playerDungeonRoomID;
+
     private DungeonRoom playerDungeonRoom = new DungeonRoom();
 
     private List<Integer> playerDungeonLevelLocationHistory = new ArrayList<Integer>();
     private List<Integer> playerDungeonSectionLocationHistory = new ArrayList<Integer>();
     private List<Integer> playerDungeonRoomLocationHistory = new ArrayList<Integer>();
 
+    private List<Integer> playerDungeonRoomIDHistory = new ArrayList<Integer>();
+
     //private List<Item> Inventory = new ArrayList<Item>();
     private Player(){
         SetPlayerDungeonLevelLocation(0);
         SetPlayerDungeonSectionLocation(0);
         SetPlayerDungeonRoomLocation(0);
-        GetPlayerRoom();
+        GetPlayerRoomID();
     }
 
-    private void GetPlayerRoom(){
+    private void GetPlayerRoomID(){
         playerDungeonRoom = DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()
                 .get(playerDungeonLevelLocation).GetChildSections()
                 .get(playerDungeonSectionLocation).GetChildRooms()
                 .get(playerDungeonRoomLocation);
+
+        playerDungeonRoomID = playerDungeonRoom.RoomID();
+    }
+
+    public void GetPlayerRoomLocationByID(){
+        int nNum=0;
+        int mNum=0;
+        int lNum=0;
+        for (DungeonLevel n : DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()) {
+
+            for (DungeonSection m : n.GetChildSections()) {
+
+                for (DungeonRoom l : m.GetChildRooms()) {
+
+                    if(l.RoomID()==playerDungeonRoomID){
+                        playerDungeonLevelLocation =nNum;
+                        playerDungeonSectionLocation =mNum;
+                        playerDungeonRoomLocation =lNum;
+                        playerDungeonRoom = l;
+                    }
+
+                    lNum++;
+                }
+                mNum++;
+            }
+            nNum++;
+        }
 
     }
 
@@ -118,9 +149,18 @@ class Player {
     }
     public int GetPlayerDungeonRoomLocation(){return playerDungeonRoomLocation;}
 
+    //PLAYER ROOM ID
+    public void SetPlayerDungeonRoomID(int _roomID){
+        playerDungeonRoomID = _roomID;
+        playerDungeonRoomIDHistory.add(_roomID);
+    }
+    public int GetPlayerDungeonRoomID(){return playerDungeonRoomID;}
+
+
+
     //PLAYER AT REAL OBJECT ROOM
     public DungeonRoom GetPlayerDungeonRoom(){
-        GetPlayerRoom();
+        GetPlayerRoomID();
         return playerDungeonRoom;
     }
 

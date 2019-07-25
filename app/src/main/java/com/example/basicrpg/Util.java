@@ -10,9 +10,9 @@ public class Util {
 
     //Aux
     public static int GenerateNumberBetween(int _min, int _max){
-        Log.d("Number Generator","Start Generating!");
-        Log.d("min:", String.valueOf(_min));
-        Log.d("max:", String.valueOf(_max));
+        //Log.d("Number Generator","Start Generating!");
+        //Log.d("min:", String.valueOf(_min));
+        //Log.d("max:", String.valueOf(_max));
 
         Random r = new Random();
         int result;
@@ -24,7 +24,7 @@ public class Util {
 
 
 
-        Log.d("result :",String.valueOf(result));
+        //Log.d("result :",String.valueOf(result));
         return result;
     }
 

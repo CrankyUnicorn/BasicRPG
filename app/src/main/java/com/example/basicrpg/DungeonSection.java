@@ -28,9 +28,8 @@ public class DungeonSection {
 
     private List<DungeonRoom> childRooms = new ArrayList<DungeonRoom>();
 
-    public List<DungeonRoom> GetChildRooms() {
-        return childRooms;
-    }
+    public List<DungeonRoom> GetChildRooms() {return childRooms;}
+
 
 
     //CONSTRUCTOR OVERLOAD
@@ -42,16 +41,19 @@ public class DungeonSection {
 
         dungeonSectionId = Util.GetId();
 
-        SetDungeonSection(_numberOfRooms);
+        SetDungeonSection();
     }
 
     DungeonSection(){}
 
 
     //AUX
-    private void SetDungeonSection(int _numberOfRooms){
+    private void SetDungeonSection(){
 
-        for (int i = 0; i <_numberOfRooms; i++){
+        for (int i = 0; i <numberOfRooms; i++){
+
+            Log.d("RoomList","Create Room!");
+
 
             DungeonRoom dungeonRoom = RoomsList.getInstance().GetRandomRoom(); //get a random room from a room List
 

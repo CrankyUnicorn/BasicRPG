@@ -19,7 +19,7 @@ public class UserInterfaceIOHandler {
 
         String LocationInfo =  "Level "+ DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()
                                 .get( Player.GetCurrentPlayer().GetPlayerDungeonLevelLocation()).GetDungeonLevelName() +
-                                "| Section " + DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()
+                                " | Section " + DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()
                                 .get( Player.GetCurrentPlayer().GetPlayerDungeonLevelLocation()).GetChildSections()
                                 .get( Player.GetCurrentPlayer().GetPlayerDungeonSectionLocation()).GetDungeonSectionName();
 
@@ -40,59 +40,36 @@ public class UserInterfaceIOHandler {
     //#1
     public int GetDoorOneButton() {
 
-        int[] DoorsInfoIDs = Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsId();
-
-        int DoorInfoID  = DoorsInfoIDs.length > 0 ? DoorsInfoIDs[0]:0;
-
-        return DoorInfoID;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(0);
     }
 
     public String GetDoorOneButtonTitle(){
 
-        String[] DoorsInfos =    Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsNames();
-
-        String DoorInfo = DoorsInfos.length > 0 ? DoorsInfos[0]:"No Door";
-
-        return DoorInfo ;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(0);
     }
 
     //#2
     public int GetDoorTwoButton() {
 
-        int[] DoorsInfoIDs = Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsId();
-
-        int DoorInfoID  = DoorsInfoIDs.length > 1 ? DoorsInfoIDs[1]:0;
-
-        return DoorInfoID;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(1);
     }
 
     public String GetDoorTwoButtonTitle(){
 
-        String[] DoorsInfos =    Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsNames();
-
-        String DoorInfo = DoorsInfos.length > 1 ? DoorsInfos[1]:"No Door";
-
-        return DoorInfo ;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(1);
     }
 
     //#3
     public int GetDoorThreeButton() {
 
-        int[] DoorsInfoIDs = Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsId();
-
-        int DoorInfoID  = DoorsInfoIDs.length > 2 ? DoorsInfoIDs[2]:0;
-
-        return DoorInfoID;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(2);
     }
 
     public String GetDoorThreeButtonTitle(){
 
-        String[] DoorsInfos =    Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomExitsNames();
-
-        String DoorInfo = DoorsInfos.length > 2 ? DoorsInfos[2]:"No Door";
-
-        return DoorInfo ;
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(2);
     }
+
 
     public String GetCharacterStatsTitle(){return "nothing yet" ;}
 
@@ -100,19 +77,22 @@ public class UserInterfaceIOHandler {
     public String GetCharacterInventoryTitle(){return "nothing yet";}
 
 
+
     public void SelectedDoorButton(int _roomID){
         switch (_roomID){
-            case 0 :     Player.GetCurrentPlayer().SetPlayerDungeonRoomLocation(GetDoorOneButton());
+            case 0 :    Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorOneButton());
+
                         break;
             case 1 :
-                        Player.GetCurrentPlayer().SetPlayerDungeonRoomLocation(GetDoorTwoButton());
+                        Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorTwoButton());
                         break;
             case 2 :
-                        Player.GetCurrentPlayer().SetPlayerDungeonRoomLocation(GetDoorThreeButton());
+                        Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorThreeButton());
                         break;
             default :
                         break;
         }
+        Player.GetCurrentPlayer().GetPlayerRoomLocationByID();
     }
 
 }

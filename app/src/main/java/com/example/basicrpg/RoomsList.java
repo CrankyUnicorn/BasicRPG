@@ -119,8 +119,8 @@ public class RoomsList {
                 Util.GetId(),
                 room.RoomName(),
                 room.RoomDescription(),
-                room.RoomExitsId(),
-                room.RoomExitsNames()
+                room.GetRoomExitsId(),
+                room.GetRoomExitsNames()
         );
 
         return DungeonRoomOut;

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     TextView characterStatsTitle;
     TextView characterInventoryTitle;
 
-    int[] diceDrawables = { R.drawable.dice1,
+    int[] imageDiceDrawables = { R.drawable.dice1,
                         R.drawable.dice2,
                         R.drawable.dice3,
                         R.drawable.dice4,
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                         R.drawable.dice6
     };
 
+    int imageDungeonEntrance =  R.drawable.dungeonentrance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         characterStatsTitle = (TextView) findViewById(R.id.characterStats);
         characterInventoryTitle = (TextView) findViewById(R.id.characterInventory);
+
+        outputContent();
     }
 
     public void buttonOneClick(View view){
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         dungeonLocationTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonLocationTitle());
         dungeonRoomDescriptionTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomDescriptionTitle());
 
-        dungeonImageView.setImageResource(diceDrawables[1]);
+        dungeonImageView.setImageResource(imageDungeonEntrance);
 
         doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorOneButtonTitle());
         doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorTwoButtonTitle());
@@ -92,11 +95,14 @@ public class MainActivity extends AppCompatActivity {
         characterInventoryTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterInventoryTitle());
     }
 
+
+
+    //----------------------------------------------------------------------------------
     public void rollButtonClick(View view) {
 
         int rolledNumber = rollDice();
 
-        //imageView.setImageResource(diceDrawables [rolledNumber]);
+        //imageView.setImageResource(imageDiceDrawables [rolledNumber]);
 
         rolledNumber++;
 
