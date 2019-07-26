@@ -8,6 +8,8 @@ public class Util {
 
     private static int currentID;
 
+    private static int currentRoomID;
+
     //Aux
     public static int GenerateNumberBetween(int _min, int _max){
         //Log.d("Number Generator","Start Generating!");
@@ -38,6 +40,18 @@ public class Util {
         }
 
         return currentID;
+    }
+
+    //Aux
+    public static int GetRoomId(){
+
+        currentRoomID++;
+
+        if(currentID==Integer.MAX_VALUE){
+            Log.d("Alert: Max Value", String.valueOf(currentID));
+        }
+
+        return currentRoomID;
     }
 
 

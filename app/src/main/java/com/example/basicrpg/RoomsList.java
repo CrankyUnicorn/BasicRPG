@@ -3,12 +3,11 @@ package com.example.basicrpg;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoomsList {
 
-    private static final RoomsList ourInstance = new RoomsList(GameSettings.roomTypes);//
+    private static final RoomsList ourInstance = new RoomsList(GameSettings.ROOM_TYPES);//
 
     public static RoomsList getInstance() {
         return ourInstance;
@@ -29,6 +28,31 @@ public class RoomsList {
         numberOfRooms = roomsList.size();
     }
 
+	//-----------------
+
+
+
+	private void GenerateEntranceRoom(){
+
+        int[] entranceDoors = {0,0,0,0};
+        String[] entranceDoorsDescription = {"","","",""};
+
+            DungeonRoom DungeonRoomOut = new DungeonRoom(
+                    TrapsList.GetTrapFromList(0),
+					MonstersList.GetMonsterFromList(0),
+					TreasuresList.GetTreasureFromList(0),
+                    Util.GetId(),
+                    "Entrance",
+                    "You find yourself at the entrance of a Dungeon",
+                    entranceDoors,
+                    entranceDoorsDescription
+            );
+
+            roomsList.add(DungeonRoomOut);
+
+    }
+
+
 
     //AUX BUILDER
     private void GenerateRooms(int _numberOfRooms){
@@ -37,11 +61,13 @@ public class RoomsList {
 
         for (int i = 0; i <_numberOfRooms; i++){
 
-            int[] entranceDoors={0,0,0};
-            String[] entranceDoorsDescription={"","",""};
+            int[] entranceDoors={0,0,0,0};
+            String[] entranceDoorsDescription={"","","",""};
 
             DungeonRoom DungeonRoomOut = new DungeonRoom(
                     TrapsList.GetRandomTrap(),
+					MonstersList.GetRandomMonster(),
+					TreasuresList.GetRandomTreasure(),
                     Util.GetId(),
                     DungeonNameGenerator.GenerateRoomName(),
                     DungeonNameGenerator.GenerateRoomDescription(),
@@ -58,24 +84,8 @@ public class RoomsList {
         //Log.d("Room Zero Names : ", Arrays.toString(roomsList.get(0).RoomExitsNames()));
     }
 
-    private void GenerateEntranceRoom(){
-
-        int[] entranceDoors = {1,2,3};
-        String[] entranceDoorsDescription = {"Path to the left","Down the stairs","Go back"};
-
-            DungeonRoom DungeonRoomOut = new DungeonRoom(
-                    TrapsList.GetTrapFromList(0),
-                    Util.GetId(),
-                    "Entrance",
-                    "You find yourself at the entrance of a Dungeon",
-                    entranceDoors,
-                    entranceDoorsDescription
-            );
-
-            roomsList.add(DungeonRoomOut);
-
-    }
-
+  
+	//---------------------
 
     //AUX
     public DungeonRoom CloneDungeonRoomById(int _index){
@@ -104,7 +114,7 @@ public class RoomsList {
     //AUX
     public DungeonRoom GetRandomRoom(){
 
-        DungeonRoom selectedRoom = roomsList.get(Util.GenerateNumberBetween(0, roomsList.size()));
+        DungeonRoom selectedRoom = roomsList.get(Util.GenerateNumberBetween(1, roomsList.size()));
 
         return CloneDungeonRoom(selectedRoom);
     }
@@ -116,7 +126,9 @@ public class RoomsList {
 
         DungeonRoom DungeonRoomOut = new DungeonRoom(
                 room.ThisRoomTrap(),
-                Util.GetId(),
+                room.ThisRoomMonster(),
+                room.ThisRoomTreasure(),
+                Util.GetRoomId(),
                 room.RoomName(),
                 room.RoomDescription(),
                 room.GetRoomExitsId(),

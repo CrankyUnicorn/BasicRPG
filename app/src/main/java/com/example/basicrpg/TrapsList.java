@@ -4,13 +4,12 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TrapsList {
 
     private static List<RoomTrap> roomTrapList = new ArrayList<RoomTrap>();
 
-    private static final TrapsList ourInstance = new TrapsList(GameSettings.trapTypes);//
+    private static final TrapsList ourInstance = new TrapsList(GameSettings.TRAP_TYPES);//
 
     public static TrapsList getInstance() {
         return ourInstance;

@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     Button doorOneButton;
     Button doorTwoButton;
     Button doorThreeButton;
+    Button doorFourButton;
+    Button doorFiveButton;
 
     TextView characterStatsTitle;
     TextView characterInventoryTitle;
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         doorOneButton = (Button) findViewById(R.id.buttonOne);
         doorTwoButton = (Button) findViewById(R.id.buttonTwo);
         doorThreeButton = (Button) findViewById(R.id.buttonThree);
+        doorFourButton = (Button) findViewById(R.id.buttonFour);
+        doorFiveButton = (Button) findViewById(R.id.buttonFive);
 
         characterStatsTitle = (TextView) findViewById(R.id.characterStats);
         characterInventoryTitle = (TextView) findViewById(R.id.characterInventory);
@@ -69,12 +73,23 @@ public class MainActivity extends AppCompatActivity {
         UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(0);
         outputContent();
     }
+
     public void buttonTwoClick(View view){
         UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(1);
         outputContent();
     }
+
     public void buttonThreeClick(View view){
+        //interaction
+    }
+
+    public void buttonFourClick(View view){
         UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(2);
+        outputContent();
+    }
+
+    public void buttonFiveClick(View view){
+        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(3);
         outputContent();
     }
 
@@ -87,9 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
         dungeonImageView.setImageResource(imageDungeonEntrance);
 
-        doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorOneButtonTitle());
-        doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorTwoButtonTitle());
-        doorThreeButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorThreeButtonTitle());
+        doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(0));
+        doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(1));
+        doorThreeButton.setText("Search");
+        doorFourButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(2));
+        doorFiveButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(3));
 
         characterStatsTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterStatsTitle());
         characterInventoryTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterInventoryTitle());

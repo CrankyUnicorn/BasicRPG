@@ -49,13 +49,13 @@ public class Dungeon {
     //VERIFIER
     private void VerifyDungeonList() {
 
-        dungeonName = GameSettings.dungeonName.isEmpty() ? DungeonNameGenerator.GenerateDungeonName() : GameSettings.dungeonName;
+        dungeonName = GameSettings.DUNGEON_NAME.isEmpty() ? DungeonNameGenerator.GenerateDungeonName() : GameSettings.DUNGEON_NAME;
 
-        dungeonTotalLevels = GameSettings.dungeonLevels < 1 ? 1 : GameSettings.dungeonLevels;
+        dungeonTotalLevels = GameSettings.DUNGEON_LEVELS < 1 ? 1 : GameSettings.DUNGEON_LEVELS;
 
-        dungeonTotalSections = GameSettings.dungeonSections < dungeonTotalLevels ? dungeonTotalLevels : GameSettings.dungeonSections;
+        dungeonTotalSections = GameSettings.DUNGEON_SECTIONS < dungeonTotalLevels ? dungeonTotalLevels : GameSettings.DUNGEON_SECTIONS;
 
-        dungeonTotalRooms = GameSettings.dungeonRooms < dungeonTotalSections ? dungeonTotalSections : GameSettings.dungeonRooms;
+        dungeonTotalRooms = GameSettings.DUNGEON_ROOMS < dungeonTotalSections ? dungeonTotalSections : GameSettings.DUNGEON_ROOMS;
 
     }
 
@@ -184,52 +184,129 @@ public class Dungeon {
                 if (_selectedSection.GetChildRooms().size() == 1) {//if only haves one room
 
                     //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 0);//sector exit ||level exit||or exit win
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 3);//sector exit ||level exit||or exit win
 
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(previousID), 0);
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(previousID), 3);
 
                     //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(nextID, 1);//sector exit ||level exit||or exit win
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(nextID, 0);//sector exit ||level exit||or exit win
 
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(nextID), 1);
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(nextID), 0);
 
 
                 } else {
 
                     //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 0);//sector exit ||level exit||or exit win
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 3);//sector exit ||level exit||or exit win
 
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(previousID), 0);
+                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + String.valueOf(previousID), 3);
 
 
                     //point only to front exit
-                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsId(nextID, 1);//sector exit ||level exit||or exit win
+                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsId(nextID, 0);//sector exit ||level exit||or exit win
 
-                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsNames("Go To " + String.valueOf(nextID), 1);
+                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsNames("Go To " + String.valueOf(nextID), 0);
 
 
-                    for (int l = 0; l > _selectedSection.GetChildRooms().size(); l++) {
 
-                        int exitDoorsNumber = Util.GenerateNumberBetween(0, 3);
+                    for (int l = 0; l < _selectedSection.GetChildRooms().size(); l++) {
 
+
+                        int exitDoorsNumber = 0;
+
+                        int connections  = Util.GenerateNumberBetween(0, 10);
+
+                        if(connections<1){exitDoorsNumber=0;}
+                        else if(connections<3){exitDoorsNumber=1;}
+                        else if(connections<6){exitDoorsNumber=2;}
+                        else if(connections<8){exitDoorsNumber=3;}
+                        else{exitDoorsNumber=4;}
+
+                        Log.d("make exits x->",String.valueOf(exitDoorsNumber));
+
+
+
+                        int failedKTimes=0;
 
                         for (int k = 0; k < exitDoorsNumber; k++) {
 
+                            Log.d("creating exits",String.valueOf(k)+"|"+String.valueOf(exitDoorsNumber));
 
-                            if (_selectedSection.GetChildRooms().get(l).GetRoomExitsIdByIndex(k) == 0) {
+                            int formula = l + k + 1 - failedKTimes;
 
-                                if ((l + k) < _selectedSection.GetChildRooms().size()) {
+                            for (int i = 0; i < 4 ; i++) {//ON THIS ROOM
 
-                                    //sets the door ok of this room to the next k target room in the array of the section
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(_selectedSection.GetChildRooms().get(l + k).RoomID(), k);
-                                   // _selectedSection.GetChildRooms().get(l).SetRoomExitsNames(_selectedSection.GetChildRooms().get(l + k).RoomName(), k);
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(l + k).RoomID()), k);
+                                if (formula < _selectedSection.GetChildRooms().size()) {
+                                    //DELETE DOOR REF OF TARGET ON THIS ROOM DOOR TO BE REWRITEN
+                                    if(_selectedSection.GetChildRooms().get(formula).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
 
-                                    //this sets the door 0 ate the targeted room to the one that target it
-                                    _selectedSection.GetChildRooms().get(l + k).SetRoomExitsId(_selectedSection.GetChildRooms().get(l).RoomID(), 0);
-                                  //  _selectedSection.GetChildRooms().get(l + k).SetRoomExitsNames(_selectedSection.GetChildRooms().get(l).RoomName(), 0);
-                                   _selectedSection.GetChildRooms().get(l + k).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(l).RoomID()), 0);
+                                        //cleans possible references to write only one next for loop
+                                        _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
+                                        _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
+
+                                    }
                                 }
+
+                                //DELETE DOOR REF IF EQUAL OF THIS SAME ROOM
+                                if(_selectedSection.GetChildRooms().get(l).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
+
+                                    //cleans possible references to write only one next for loop
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
+
+                                }
+                            }
+
+
+                            if (_selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(k) == 0) {
+
+                                Log.d("creating exits","empty exit available");
+
+
+
+                                if (formula < _selectedSection.GetChildRooms().size()) {
+
+                                    Log.d("creating exits","enough room forward");
+
+
+
+
+                                    //SETS DOOR K of this room to the FORMULA.ROOMID target room
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(_selectedSection.GetChildRooms().get(formula).RoomID(), k);
+
+                                    //SETS DOOR K of this room to the FORMULA.ROOMNAME target room
+                                   // _selectedSection.GetChildRooms().get(l).SetRoomExitsNames(_selectedSection.GetChildRooms().get(formula).RoomName(), k);
+
+                                    //TESTING TOOL
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomID()), k);
+
+
+                                    for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM
+                                        //DELETES REF ON DOOR OF TARGET OF THE ACTUAL ROOM
+                                        if (_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(k)) {
+
+                                            //cleans possible references to write only one next for loop
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(0, i);
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("", i);
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM{
+                                        //SETS REF OF ACTUAL ROOM AT TARGET ROOM
+                                        if(_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == 0 ) {
+
+                                            //this sets the door 0 ate the targeted room to the one that target it
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(_selectedSection.GetChildRooms().get(l).RoomID(), i);
+                                            //  _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames(_selectedSection.GetChildRooms().get(l).RoomName(), i);
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("Go To " + String.valueOf(_selectedSection.GetChildRooms().get(l).RoomID()), i);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }else{
+                                failedKTimes++;
                             }
 
                         }

@@ -6,6 +6,8 @@ import java.util.Map;
 public class DungeonRoom{
 
     private IRoomTrap thisRoomTrap;
+    private IRoomMonster thisRoomMonster;
+    private IRoomTreasure thisRoomTreasure;
 
     private int roomId;
     private String roomName;
@@ -18,9 +20,11 @@ public class DungeonRoom{
 
 
 	//CONSTRUCTOR OVERLOAD
-    DungeonRoom(IRoomTrap _thisRoomTrap, int _roomId, String _roomName,String _roomDescription, int[] _roomExitsId, String[] _roomExitsNames){
+    DungeonRoom(IRoomTrap _thisRoomTrap,IRoomMonster _thisRoomMonster ,IRoomTreasure _thisRoomTreasure, int _roomId, String _roomName,String _roomDescription, int[] _roomExitsId, String[] _roomExitsNames){
 
-		thisRoomTrap =_thisRoomTrap;
+		this.thisRoomTrap =_thisRoomTrap;
+		this.thisRoomMonster = _thisRoomMonster;
+		this.thisRoomTreasure = _thisRoomTreasure;
 
 		roomId = _roomId;
 		roomName = _roomName;
@@ -39,6 +43,8 @@ public class DungeonRoom{
 	public IRoomTrap ThisRoomTrap(){
 		return thisRoomTrap;
 	}
+	public IRoomMonster ThisRoomMonster(){return thisRoomMonster;}
+	public IRoomTreasure ThisRoomTreasure(){return thisRoomTreasure;}
 
 	public int RoomID(){
 		return roomId;
@@ -58,8 +64,8 @@ public class DungeonRoom{
 
 	//---EXITS---
 	public void SetRoomExitsId(int _id , int _index){
-		if(_index<roomExitsId.length){
-		roomExitsId[_index] = _id;}
+
+		roomExitsId[_index] = _id;
 	}
 
 	public int[] GetRoomExitsId(){
@@ -67,27 +73,24 @@ public class DungeonRoom{
 	}
 
 
-	public int GetRoomExitsIdByIndex(int _index){
-		if(_index<roomExitsId.length){
-			return roomExitsId[_index];
-		}
-		return roomExitsId[0];
+	public int GetRoomExitIdByIndex(int _index){
+
+		return roomExitsId[_index];
 	}
 
 	//---NAMES---
 	public void SetRoomExitsNames(String _string , int _index){
-		if(_index<roomExitsNames.length){
-		roomExitsNames[_index] = _string;}
+
+		roomExitsNames[_index] = _string;
 	}
 	
 	public String[] GetRoomExitsNames(){
 		return roomExitsNames;
 	}
 
-	public String GetRoomExitsNamesByIndex(int _index){
-		if(_index<roomExitsNames.length){
-		return roomExitsNames[_index];}
-		return roomExitsNames[0];
+	public String GetRoomExitNameByIndex(int _index){
+
+		return roomExitsNames[_index];
 	}
 
 

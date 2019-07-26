@@ -23,7 +23,7 @@ class Player {
     private int playerDungeonSectionLocation;
     private int playerDungeonRoomLocation;
 
-    private int playerDungeonRoomID;
+    //private int playerDungeonRoomID;
 
     private DungeonRoom playerDungeonRoom = new DungeonRoom();
 
@@ -33,24 +33,35 @@ class Player {
 
     private List<Integer> playerDungeonRoomIDHistory = new ArrayList<Integer>();
 
-    //private List<Item> Inventory = new ArrayList<Item>();
+    private List<Item> Inventory = new ArrayList<Item>();
+
+
     private Player(){
         SetPlayerDungeonLevelLocation(0);
         SetPlayerDungeonSectionLocation(0);
         SetPlayerDungeonRoomLocation(0);
-        GetPlayerRoomID();
+        FindPlayerRoomByLocation();
+
+        SetInvetory();
     }
 
-    private void GetPlayerRoomID(){
+    private void SetInvetory(){
+        Item item = new Item(   "Old Grungy Key",
+                            "This old looking key emanates an aura of ill intent.");
+
+        Inventory.add(item);
+    }
+
+    private void FindPlayerRoomByLocation(){
         playerDungeonRoom = DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()
                 .get(playerDungeonLevelLocation).GetChildSections()
                 .get(playerDungeonSectionLocation).GetChildRooms()
                 .get(playerDungeonRoomLocation);
 
-        playerDungeonRoomID = playerDungeonRoom.RoomID();
+
     }
 
-    public void GetPlayerRoomLocationByID(){
+    private void FindPlayerRoomLocationByID(){
         int nNum=0;
         int mNum=0;
         int lNum=0;
@@ -60,7 +71,7 @@ class Player {
 
                 for (DungeonRoom l : m.GetChildRooms()) {
 
-                    if(l.RoomID()==playerDungeonRoomID){
+                    if(l.RoomID()==playerDungeonRoom.RoomID()){
                         playerDungeonLevelLocation =nNum;
                         playerDungeonSectionLocation =mNum;
                         playerDungeonRoomLocation =lNum;
@@ -69,18 +80,62 @@ class Player {
 
                     lNum++;
                 }
+                lNum = 0;
                 mNum++;
             }
+            mNum = 0;
+            nNum++;
+        }
+
+    }
+
+    private void FindPlayerRoomByID(int _roomID){
+        int nNum=0;
+        int mNum=0;
+        int lNum=0;
+        for (DungeonLevel n : DungeonMap.GetDungeonMap().GetCurrentDungeon().GetChildLevels()) {
+
+            for (DungeonSection m : n.GetChildSections()) {
+
+                for (DungeonRoom l : m.GetChildRooms()) {
+
+                    if(l.RoomID()==_roomID){
+                        playerDungeonLevelLocation =nNum;
+                        playerDungeonSectionLocation =mNum;
+                        playerDungeonRoomLocation =lNum;
+                        playerDungeonRoom = l;
+                    }
+
+                    lNum++;
+                }
+                lNum = 0;
+                mNum++;
+            }
+            mNum = 0;
             nNum++;
         }
 
     }
 
     //ACESSORS
+
+    //PLAYER AT REAL OBJECT ROOM
+    public void SetPlayerDungeonRoom(DungeonRoom _room){
+        playerDungeonRoom = _room;
+        FindPlayerRoomLocationByID();
+
+    }
+
+    public DungeonRoom GetPlayerDungeonRoom(){
+        FindPlayerRoomByLocation();//just for safety
+        return playerDungeonRoom;
+    }
+
+
     //PLAYER NAME
     public void SetPlayerName(String _playerName){
 
-        if(playerName == null){
+        if(playerName.isEmpty()){
             playerName = _playerName;
         }
 
@@ -150,19 +205,32 @@ class Player {
     public int GetPlayerDungeonRoomLocation(){return playerDungeonRoomLocation;}
 
     //PLAYER ROOM ID
-    public void SetPlayerDungeonRoomID(int _roomID){
-        playerDungeonRoomID = _roomID;
+    public void SetPlayerDungeonRoomByID(int _roomID){
+        FindPlayerRoomByID(_roomID);
         playerDungeonRoomIDHistory.add(_roomID);
     }
-    public int GetPlayerDungeonRoomID(){return playerDungeonRoomID;}
-
-
-
-    //PLAYER AT REAL OBJECT ROOM
-    public DungeonRoom GetPlayerDungeonRoom(){
-        GetPlayerRoomID();
-        return playerDungeonRoom;
+    public int GetPlayerDungeonRoomID(){
+        FindPlayerRoomByLocation();//again just to be safe
+        return playerDungeonRoom.RoomID();
     }
 
+
+public String PlayerStats(){
+    String outputString ="";
+    outputString ="Player Name" + GetPlayerName();
+    outputString =" | ";
+    outputString ="Player Health " + GetPlayerHealth();
+        return outputString;
+    }
+
+public String PlayerInventory(){
+    String outputString ="";
+    for (Item i: Inventory) {
+        outputString += i.GetItemName();
+        outputString += " - ";
+        outputString += i.GetItemDescription();
+    }
+        return outputString;
+}
 
 }

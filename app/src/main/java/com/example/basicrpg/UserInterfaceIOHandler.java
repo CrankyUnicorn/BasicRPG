@@ -28,71 +28,44 @@ public class UserInterfaceIOHandler {
 
 
     public String GetDungeonRoomDescriptionTitle(){
-
-        String RoomInfo =   Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomDescription();
-        return RoomInfo ;
+        String outputString = "";
+        outputString += Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomName();
+        outputString += " "+Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomID();
+        outputString += "\n";
+        outputString += Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomDescription();
+        return outputString ;
     }
 
 
     //dungeonImageView = (ImageView) findViewById(R.id.dungeonImageView);
 
 
-    //#1
-    public int GetDoorOneButton() {
+    public String GetDoorButtonTitle(int _indexDoor){
 
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(0);
-    }
-
-    public String GetDoorOneButtonTitle(){
-
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(0);
-    }
-
-    //#2
-    public int GetDoorTwoButton() {
-
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(1);
-    }
-
-    public String GetDoorTwoButtonTitle(){
-
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(1);
-    }
-
-    //#3
-    public int GetDoorThreeButton() {
-
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsIdByIndex(2);
-    }
-
-    public String GetDoorThreeButtonTitle(){
-
-        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitsNamesByIndex(2);
+        return Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitNameByIndex(_indexDoor);
     }
 
 
-    public String GetCharacterStatsTitle(){return "nothing yet" ;}
+    public String GetCharacterStatsTitle(){
+
+        return Player.GetCurrentPlayer().PlayerStats();
+    }
 
 
-    public String GetCharacterInventoryTitle(){return "nothing yet";}
+    public String GetCharacterInventoryTitle(){
+
+        return Player.GetCurrentPlayer().PlayerInventory();
+    }
 
 
 
     public void SelectedDoorButton(int _roomID){
-        switch (_roomID){
-            case 0 :    Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorOneButton());
 
-                        break;
-            case 1 :
-                        Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorTwoButton());
-                        break;
-            case 2 :
-                        Player.GetCurrentPlayer().SetPlayerDungeonRoomID(GetDoorThreeButton());
-                        break;
-            default :
-                        break;
-        }
-        Player.GetCurrentPlayer().GetPlayerRoomLocationByID();
+
+        int roomID = Player.GetCurrentPlayer().GetPlayerDungeonRoom().GetRoomExitIdByIndex(_roomID);
+        Player.GetCurrentPlayer().SetPlayerDungeonRoomByID(roomID);
+
+
     }
 
 }

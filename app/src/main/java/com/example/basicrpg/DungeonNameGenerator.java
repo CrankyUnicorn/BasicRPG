@@ -62,9 +62,54 @@ public class DungeonNameGenerator {
 
     public static String GenerateRoomDescription(){
 
-        String output ="This is the room description please create develop this";
+        String output ="This is the room description please develop this";
 
         return output;
     }
+
+    public static String GenerateMonsterName(){
+
+        String output ="monster name";
+
+        return output;
+    }
+
+    public static String GenerateMonsterDescription(){
+
+        String output ="monster description";
+
+        return output;
+    }
+
+
+    public static String GenerateTreasureName(){
+
+        String output ="treasure name";
+
+        return output;
+    }
+
+    public static String GenerateTreasureDescription(){
+
+        String output ="treasure description";
+
+        return output;
+    }
+
+    public static String GenerateItemName(){
+
+        String output ="item name";
+
+        return output;
+    }
+
+    public static String GenerateItemDescription(){
+
+        String output ="item description";
+
+        return output;
+    }
+
+
 
 }
