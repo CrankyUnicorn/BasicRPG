@@ -24,6 +24,8 @@ public class ItemsList {
 
         NoItem(); //No item
 
+
+
         for(int i = 0 ; i < _itemsQuantity; i++){
 
             Item generatedItem = new Item(	DungeonNameGenerator.GenerateItemName(),
@@ -34,11 +36,22 @@ public class ItemsList {
 
     }
 
+
     private void NoItem(){
 
             Item generatedItem = new Item("No Item","No Description");
 
             itemsList.add(generatedItem);
+    }
+
+    //ACESSOR
+    public static Item KeyItem(){
+
+        Item item = new Item(   "Old Grungy Key",
+                "This old looking key emanates an aura of ill intent.");
+
+
+        return item;
     }
 
 
@@ -47,9 +60,10 @@ public class ItemsList {
         return itemsList.get(index);
     }
 
+
     public static  Item GetRandomItem(){
         Log.d("ItemList","Create Item!");
-        return itemsList.get(Util.GenerateNumberBetween(0,itemsList.size()-1));
+        return itemsList.get(Util.GenerateNumberBetween(0,itemsList.size()));
     }
 
     public int GetItemsListLength(){

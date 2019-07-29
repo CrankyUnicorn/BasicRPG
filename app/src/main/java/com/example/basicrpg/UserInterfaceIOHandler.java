@@ -33,12 +33,14 @@ public class UserInterfaceIOHandler {
         outputString += " "+Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomID();
         outputString += "\n";
         outputString += Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomDescription();
+
         return outputString ;
     }
 
-
-    //dungeonImageView = (ImageView) findViewById(R.id.dungeonImageView);
-
+    public int GetDungeonRoomImage() {
+        int dungeonImageView = Player.GetCurrentPlayer().GetPlayerDungeonRoom().RoomImage();
+        return  dungeonImageView;
+    }
 
     public String GetDoorButtonTitle(int _indexDoor){
 

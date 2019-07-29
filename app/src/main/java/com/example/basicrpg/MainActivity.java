@@ -35,13 +35,7 @@ public class MainActivity extends AppCompatActivity {
     TextView characterStatsTitle;
     TextView characterInventoryTitle;
 
-    int[] imageDiceDrawables = { R.drawable.dice1,
-                        R.drawable.dice2,
-                        R.drawable.dice3,
-                        R.drawable.dice4,
-                        R.drawable.dice5,
-                        R.drawable.dice6
-    };
+
 
     int imageDungeonEntrance =  R.drawable.dungeonentrance;
 
@@ -100,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         dungeonLocationTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonLocationTitle());
         dungeonRoomDescriptionTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomDescriptionTitle());
 
-        dungeonImageView.setImageResource(imageDungeonEntrance);
+        dungeonImageView.setImageResource(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomImage());
 
         doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(0));
         doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(1));

@@ -26,7 +26,7 @@ public class MonstersList {
 
         for(int i = 0 ; i < _monstersQuantity; i++){
 
-            RoomMonster generatedMonster = new RoomMonster(	DungeonNameGenerator.GenerateMonsterName(),
+            RoomMonster generatedMonster = new RoomMonster(	true, DungeonNameGenerator.GenerateMonsterName(),
                                                             DungeonNameGenerator.GenerateMonsterDescription());
 
             monstersList.add(generatedMonster);
@@ -36,7 +36,7 @@ public class MonstersList {
 
     private void NoMonster(){
 
-        RoomMonster generatedMonster = new RoomMonster("No Monster","No Description");
+        RoomMonster generatedMonster = new RoomMonster(false,"No Monster","No Description");
 
         monstersList.add(generatedMonster);
     }

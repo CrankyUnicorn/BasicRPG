@@ -13,6 +13,8 @@ public class DungeonRoom{
     private String roomName;
     private String roomDescription;
 
+    private int imageRoom;
+
     private boolean roomExplored;
 
     private int[] roomExitsId;
@@ -20,7 +22,7 @@ public class DungeonRoom{
 
 
 	//CONSTRUCTOR OVERLOAD
-    DungeonRoom(IRoomTrap _thisRoomTrap,IRoomMonster _thisRoomMonster ,IRoomTreasure _thisRoomTreasure, int _roomId, String _roomName,String _roomDescription, int[] _roomExitsId, String[] _roomExitsNames){
+    DungeonRoom(IRoomTrap _thisRoomTrap,IRoomMonster _thisRoomMonster ,IRoomTreasure _thisRoomTreasure, int _roomId, String _roomName,String _roomDescription,boolean _roomExplored,int _imageRoom, int[] _roomExitsId, String[] _roomExitsNames){
 
 		this.thisRoomTrap =_thisRoomTrap;
 		this.thisRoomMonster = _thisRoomMonster;
@@ -29,6 +31,9 @@ public class DungeonRoom{
 		roomId = _roomId;
 		roomName = _roomName;
 		roomDescription = _roomDescription;
+
+		imageRoom = _imageRoom;
+		roomExplored = _roomExplored;
 
 		roomExitsId = _roomExitsId;
 		roomExitsNames = _roomExitsNames;
@@ -55,12 +60,26 @@ public class DungeonRoom{
 	}
 	 
 	public String RoomDescription(){
-		return roomDescription;
+    	String output="";
+		output += roomDescription;
+		output += thisRoomMonster.MonsterPresent() ? thisRoomMonster.MonsterDead() ?"\n Theres a dead foe on the ground" :"\n Theres a foe here": "\n There is no one here";
+		output += thisRoomTrap.TrapDetected() ? "\n You found a trap on this room" : "\n You found no trap on this room";
+		output += thisRoomTreasure.TreasureVisible() ? "\n You found a treasure on this room" : "\n You found no treasure on this room";
+		output += "\n linha de testes";
+    	return output ;
 	}
+
+
+
+	public int RoomImage(){ return imageRoom;	}
 
 	public boolean RoomExplored(){ return roomExplored;	}
 
+	//---SET ID---
+	public void ResetRoomId(){
 
+		roomId = Util.GetRoomId();
+	}
 
 	//---EXITS---
 	public void SetRoomExitsId(int _id , int _index){

@@ -33,6 +33,7 @@ public class Util {
     //Aux
     public static int GetId(){
 
+
         currentID++;
 
         if(currentID==Integer.MAX_VALUE){
@@ -47,7 +48,7 @@ public class Util {
 
         currentRoomID++;
 
-        if(currentID==Integer.MAX_VALUE){
+        if(currentRoomID==Integer.MAX_VALUE){
             Log.d("Alert: Max Value", String.valueOf(currentID));
         }
 

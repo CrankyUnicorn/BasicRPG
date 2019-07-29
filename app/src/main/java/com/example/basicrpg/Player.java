@@ -40,16 +40,24 @@ class Player {
         SetPlayerDungeonLevelLocation(0);
         SetPlayerDungeonSectionLocation(0);
         SetPlayerDungeonRoomLocation(0);
+
         FindPlayerRoomByLocation();
 
-        SetInvetory();
+        SetInvetory(2);
     }
 
-    private void SetInvetory(){
-        Item item = new Item(   "Old Grungy Key",
-                            "This old looking key emanates an aura of ill intent.");
+    private void SetInvetory(int _quantityItems){
 
-        Inventory.add(item);
+        Inventory.add(ItemsList.KeyItem());
+
+        for (int i = 0; i < _quantityItems ; i++) {
+            Item item = ItemsList.GetRandomItem();
+
+
+            Inventory.add(item);
+        }
+
+
     }
 
     private void FindPlayerRoomByLocation(){
@@ -61,7 +69,7 @@ class Player {
 
     }
 
-    private void FindPlayerRoomLocationByID(){
+    /*private void FindPlayerRoomLocationByID(){
         int nNum=0;
         int mNum=0;
         int lNum=0;
@@ -87,7 +95,7 @@ class Player {
             nNum++;
         }
 
-    }
+    }*/
 
     private void FindPlayerRoomByID(int _roomID){
         int nNum=0;
@@ -120,11 +128,11 @@ class Player {
     //ACESSORS
 
     //PLAYER AT REAL OBJECT ROOM
-    public void SetPlayerDungeonRoom(DungeonRoom _room){
+  /*  public void SetPlayerDungeonRoom(DungeonRoom _room){
         playerDungeonRoom = _room;
         FindPlayerRoomLocationByID();
 
-    }
+    }*/
 
     public DungeonRoom GetPlayerDungeonRoom(){
         FindPlayerRoomByLocation();//just for safety
@@ -209,6 +217,7 @@ class Player {
         FindPlayerRoomByID(_roomID);
         playerDungeonRoomIDHistory.add(_roomID);
     }
+
     public int GetPlayerDungeonRoomID(){
         FindPlayerRoomByLocation();//again just to be safe
         return playerDungeonRoom.RoomID();
@@ -229,6 +238,7 @@ public String PlayerInventory(){
         outputString += i.GetItemName();
         outputString += " - ";
         outputString += i.GetItemDescription();
+        outputString += "\n";
     }
         return outputString;
 }

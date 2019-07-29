@@ -7,9 +7,12 @@ import com.example.basicrpg.IRoomMonster;
 
 public class RoomMonster implements IRoomMonster {
 
+
+	private boolean monsterPresent;
+
     private String monsterName;
     private String monsterDescription;
-	
+
     private boolean monsterDead;
 	
     private int monsterDamage;
@@ -19,11 +22,17 @@ public class RoomMonster implements IRoomMonster {
 	
 	
 
-	RoomMonster(String _monsterName, String _monsterDescription){
-	
+	RoomMonster(boolean _monsterPresent, String _monsterName, String _monsterDescription){
+
+		this.monsterPresent = _monsterPresent;
 		this.monsterName = _monsterName;
 		this.monsterDescription = _monsterDescription;
 	
+	}
+
+	@Override
+	public boolean MonsterPresent() {
+		return monsterPresent;
 	}
 
 	@Override
@@ -89,5 +98,8 @@ public class RoomMonster implements IRoomMonster {
 		
         return true; //if not hitted
 	}
+
+
+
 
 }

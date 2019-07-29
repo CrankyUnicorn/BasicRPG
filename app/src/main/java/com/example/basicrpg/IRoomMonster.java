@@ -2,6 +2,8 @@ package com.example.basicrpg;
 
 public interface IRoomMonster {
 
+    public boolean MonsterPresent();
+
     public String MonsterName();
     public String MonsterDescription();
 
