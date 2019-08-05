@@ -10,6 +10,8 @@ public class Util {
 
     private static int currentRoomID;
 
+    private static int currentDoorSound;
+
     //Aux
     public static int GenerateNumberBetween(int _min, int _max){
         //Log.d("Number Generator","Start Generating!");
@@ -53,6 +55,19 @@ public class Util {
         }
 
         return currentRoomID;
+    }
+
+    //Aux
+    public static void SetSelectedSoundDoor(int _currentDoorSound){
+
+        currentDoorSound=_currentDoorSound;
+
+    }
+
+    public static int GetSelectedSoundDoor(){
+
+
+        return currentDoorSound;
     }
 
 

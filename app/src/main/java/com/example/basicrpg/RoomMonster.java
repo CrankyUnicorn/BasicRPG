@@ -14,6 +14,8 @@ public class RoomMonster implements IRoomMonster {
     private String monsterDescription;
 
     private boolean monsterDead;
+
+    private int monsterImage;
 	
     private int monsterDamage;
     private int monsterHealth;
@@ -22,11 +24,17 @@ public class RoomMonster implements IRoomMonster {
 	
 	
 
-	RoomMonster(boolean _monsterPresent, String _monsterName, String _monsterDescription){
+	RoomMonster(boolean _monsterPresent, String _monsterName, String _monsterDescription,boolean _monsterDead,int _monsterImage, int _monsterDamage, int _monsterHealth,int _monsterArmor,int _monsterHitDodge){
 
 		this.monsterPresent = _monsterPresent;
 		this.monsterName = _monsterName;
 		this.monsterDescription = _monsterDescription;
+		this.monsterDead = _monsterDead;
+		this.monsterImage = _monsterImage;
+		this.monsterDamage = _monsterDamage;
+		this.monsterHealth = _monsterHealth;
+		this.monsterArmor = _monsterArmor;
+		this.monsterHitDodge = _monsterHitDodge;
 	
 	}
 
@@ -53,6 +61,13 @@ public class RoomMonster implements IRoomMonster {
 	}
 
 	@Override
+	public int MonsterImage(){
+
+		return monsterPresent ? monsterDead ? 0 :ImageReferences.imageFoe[Util.GenerateNumberBetween(0,ImageReferences.imageFoe.length)]: 0;
+
+	}
+
+	@Override
     public int MonsterDamage() {
         return monsterDamage;
 	}
@@ -72,26 +87,27 @@ public class RoomMonster implements IRoomMonster {
         return monsterHitDodge;
 	}
 
-
-		@Override
+	
+	//####FIGHT#####
+	@Override
     public int MonsterAttacks() {
         return monsterDamage + Util.GenerateNumberBetween(0,6) + 1;
 	}
 	
 	
-		@Override
+	@Override
     public boolean MonsterDefends(int opponentHitDodge, int opponentAttack ) {
-		if(opponentHitDodge + Util.GenerateNumberBetween(0,6) + 1 < monsterHitDodge + Util.GenerateNumberBetween(0,6) + 1){
+		if(opponentHitDodge + Util.GenerateNumberBetween(0,6) + 1 > monsterHitDodge + Util.GenerateNumberBetween(0,6) + 1){
 			
-			monsterHealth =monsterHealth-(opponentAttack-monsterArmor);
+			monsterHealth =monsterHealth-(opponentAttack - monsterArmor);
 			if(monsterHealth < 0){
 				monsterHealth = 0; 
-				monsterDead=true;
-				}
+				monsterDead = true;
+			}
 			monsterArmor--;
 			if(monsterArmor<0){
-				monsterArmor=0;
-				}
+				monsterArmor = 0;
+			}
 			
 			return false;
 		}
@@ -100,6 +116,18 @@ public class RoomMonster implements IRoomMonster {
 	}
 
 
+	@Override
+	public void FightFoe(){
 
+		if(monsterPresent == true){
+			if(monsterDead == false){
+				
+					Player.GetCurrentPlayer().SetPlayerHealth(-5);
+					Player.GetCurrentPlayer().PlayerDefends(MonsterHitDodge(),MonsterAttacks());
+					MonsterDefends(Player.GetCurrentPlayer().GetPlayerHitDodge(),Player.GetCurrentPlayer().PlayerAttack());
+				
+			}
+		}
+	}
 
 }

@@ -5,6 +5,8 @@ import android.util.Log;
 
 public class RoomTreasure implements IRoomTreasure {
 
+    private boolean treasurePresent;
+
     private String treasureName;
     private String treasureDescription;
 
@@ -18,6 +20,10 @@ public class RoomTreasure implements IRoomTreasure {
 	
 	}
 
+    @Override
+    public boolean TreasurePresent() {
+        return treasurePresent;
+    }
 
     @Override
     public String TreasureName() {

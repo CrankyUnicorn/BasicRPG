@@ -6,27 +6,31 @@ public class DungeonNameGenerator {
 	
 	private static final String[] titleName = {"The"};
 
-    private static final String[] prefixName = { "Rocky", "", "Dark", "", "Sunless", "Burning", "Hallow", "Bloody", "Standing", "Lonesome","Crying"};
+    private static final String[] prefixName = { "Rocky","Cursed", "Black", "Dark", "Murky","Somber","Obscure",
+            "Tenebrous","Caliginous","Lurid","Sooty","Dim", "Sunless", "Burning", "Hallow", "Bloody", "Standing", "Lonesome","Crying"};
 
 
 
-    private static final String[] dungeonName = {"Keep","Cave","Spire","Citadel" ,"Fortress","Mine","Crypt","Ruin","Factory"};
+    private static final String[] dungeonName = {"Keep","Manor","Cave","Spire","Citadel","Fortress","Mine","Crypt","Ruin","Factory","Church","Cemetery"};
 
-    private static final String[] suffixName = {"Of Shadow","","","Of Fury","Of The Vampire","Of Evil","Of Doom","Of Despair","Of Pain","Of Tears"};
-
-
-    private static final String[] levelName =  {"Creek","Path","","Mother","Stone","Hall","Crib","Stairs"};
+    private static final String[] suffixName = {"Of Shadow","Of Fury","Of The Vampire","Of Evil","Of Doom","Of Despair",
+            "Of Pain","Of Tears","Of Whispers","Of Misfortune","Of Sins","Of The Spider", "Of Lost Souls", "Of Agony"};
 
 
-    private static final String[] roomNamePrefix = {"Mossy","Cold","Smelly","Dusty","Dark","Claustrophobic","Horrid","Blood Splattered"};
-    private static final String[] roomName = {"Chamber","Closet","Pool","Pit","Corridor","Small Chamber","Hallway","Stairway","Store"};
+    private static final String[] levelName =  {"Creek","Path","Mothers","Stone","Hall","Crib","Stairs","Lair","Tunnel","Fathers"};
+
+
+    private static final String[] roomNamePrefix = {"Mossy","Dim","Cold","Smelly","Dusty","Dark","Claustrophobic","Horrid","Blood Splattered","Burned"};
+    private static final String[] roomName = {"Chamber","Closet","Pool","Pit","Corridor","Small Chamber","Hallway","Stairway","Store","Room","Crypt"};
 
 
 
-    private static final String[] trapNamePrefix = { "Dark", "Bloody", "Dreadic", "Sharp", "Rusty","Poisoned"};
-    private static final String[] trapName = {"Spring","Dead","Bear","Switch","Rat"};
-    private static final String[] trapNameSuffix = {"Trap","Pit","Deadfall","Loop","Spike"};
+    private static final String[] trapNamePrefix = { "Dark", "Bloody", "Dreadful", "Diseased", "Sharp","Unpleasant","Machiavellian","Rude", "Rusty","Poisoned","Sadistic","Horrific","Distasteful"};
+    private static final String[] trapName = {"","","","Spring","Dead","Bear","Switch","Rat","Snake","Flame",};
+    private static final String[] trapNameSuffix = {"Trap","Trap","Trap","Pit","Deadfall","Loop","Spike","Device","Bolt Shooter","Blade","Vapor","Gas","Embrace","Bone Crusher","Saw","Flamethrower"};
 
+    private static final String[] monsterNamePrefix ={"Shadowy","Dark","Misfortuned"};
+    private static final String[] monsterName ={"Vulture","Shape","Stalker","Soul"};
 
 
     public static String GenerateDungeonName(){
@@ -62,21 +66,22 @@ public class DungeonNameGenerator {
 
     public static String GenerateRoomDescription(){
 
-        String output ="This is the room description please develop this";
+        String output ="Just another abandoned room. Decay took over the halls, the air is heavy with the smell of rotten wood and the feeling of dread";
 
         return output;
     }
 
     public static String GenerateMonsterName(){
 
-        String output ="monster name";
+        String output =monsterNamePrefix[Util.GenerateNumberBetween(0,monsterNamePrefix.length)]+" "+
+                        monsterName[Util.GenerateNumberBetween(0,monsterName.length)];
 
         return output;
     }
 
     public static String GenerateMonsterDescription(){
 
-        String output ="monster description";
+        String output ="Another damned soul lost in this world";
 
         return output;
     }

@@ -2,13 +2,20 @@ package com.example.basicrpg;
 
 public class RoomTrap implements IRoomTrap {
 
+    private boolean trapPresent;
     private String trapName;
     private boolean trapDisarmed;
 	private boolean trapDetected;
     private int trapDamage;
 	private int trapToDetect;
     private int trapToDisarm;
-  
+
+
+    @Override
+    public boolean TrapPresent() {
+        return trapPresent;
+    }
+
 
     @Override
     public String TrapName() {

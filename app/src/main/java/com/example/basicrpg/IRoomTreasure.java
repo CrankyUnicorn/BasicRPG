@@ -2,6 +2,8 @@ package com.example.basicrpg;
 
 public interface IRoomTreasure {
 
+    public boolean TreasurePresent();
+
     public String TreasureName();
     public String TreasureDescription();
 

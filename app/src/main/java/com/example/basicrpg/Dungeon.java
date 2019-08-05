@@ -44,6 +44,7 @@ public class Dungeon {
 
         ConnectRooms();
 
+        Log.d("*****","*****");
         Log.d("Initialization","Complete!");
 
         //TESTING TOOLS
@@ -123,24 +124,39 @@ public class Dungeon {
     //MAP DUNGEON TREE AND CREATE REFERENCE LIST OF ALL ROOMS
     private void MapDungeon() {
 
-		int qLevels = 0; 
-		int qSections = 0; 
+		int qLevels = 0;
+		int qSections = 0;
 		int qRooms = 0; 
 		
         listDungeonRooms.clear();
+        for (int n = 0; n < childLevels.size(); n++) {
 
-        for (DungeonLevel n : childLevels) {
-			qLevels++;
-            for (DungeonSection m : n.GetChildSections()) {
-                qSections++;
-				for (DungeonRoom l : m.GetChildRooms()) {
 
-				    l.ResetRoomId();
-					listDungeonRooms.add(l);
+            for (int m = 0; m < childLevels.get(n).GetChildSections().size(); m++) {
+
+
+                for (int l = 0; l < childLevels.get(n).GetChildSections().get(m).GetChildRooms().size(); l++) {
+
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(l).RemapRoomId();
+
+                    if(n== 0 && m == 0 && l == 0){
+
+                    }else if( n == childLevels.size()-1 && m == childLevels.get(n).GetChildSections().size()-1 && l ==  childLevels.get(n).GetChildSections().get(m).GetChildRooms().size()-1){
+
+                    }else{
+                        childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(l).RemapRoomImage(n);
+
+                    }
+
+
+					listDungeonRooms.add( childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(l));
 
 					qRooms++;
                 }
+
+                qSections++;
             }
+            qLevels++;
         }
 
 
@@ -159,6 +175,7 @@ public class Dungeon {
 
     //CONNECT ROOMS DOORS TO EACH OTHER
     private void ConnectRooms() {
+
         for (int n = 0; n < childLevels.size(); n++) {
 
 
@@ -166,185 +183,173 @@ public class Dungeon {
 
 
                 DungeonSection _selectedSection = childLevels.get(n).GetChildSections().get(m);
-
-
-                int previousID = 0;//finds previous section |level
-                String previousName = "";//finds previous section |level
-                if (n == 0) {
-                    if (m == 0) {
-
-                        previousID = childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).RoomID();
-                        previousName = childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).RoomName();
-                    }else if (m > 0) {
-
-                        previousID = childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms().size() - 1).RoomID();
-                        previousName = childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms().size() - 1).RoomName();
-                    }
-                } else if (n > 0) {
-                    if (m == 0) {
-
-                        previousID = childLevels.get(n - 1).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n - 1).GetChildSections().get(m).GetChildRooms().size() - 1).RoomID();
-                        previousName = childLevels.get(n - 1).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n - 1).GetChildSections().get(m).GetChildRooms().size() - 1).RoomName();
-                    }
-                }
-
-                int nextID = 0;//find next section level
-                String nextName = "";//find next section level
-                if (n == childLevels.size() - 1) {
-                    if (m == childLevels.get(n).GetChildSections().size() - 1) {
-
-                        nextID = childLevels.get(0).GetChildSections().get(0).GetChildRooms().get(0).RoomID();
-                        nextName = childLevels.get(0).GetChildSections().get(0).GetChildRooms().get(0).RoomName();
-
-                    }else if (m < childLevels.get(n).GetChildSections().size() - 1) {
-
-                        nextID = childLevels.get(n).GetChildSections().get(m + 1).GetChildRooms().get(0).RoomID();
-                        nextName = childLevels.get(n).GetChildSections().get(m + 1).GetChildRooms().get(0).RoomName();
-                    }
-                } else if (n < childLevels.size() - 1) {
-                    if (m == childLevels.get(n).GetChildSections().size() - 1) {
-
-
-                        nextID = childLevels.get(n + 1).GetChildSections().get(0).GetChildRooms().get(0).RoomID();
-                        nextName = childLevels.get(n + 1).GetChildSections().get(0).GetChildRooms().get(0).RoomName();
-                    }
-                }
-
-
-                if (_selectedSection.GetChildRooms().size() == 1 ) {//if only haves one room
-
-                    //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 3);//sector exit ||level exit||or exit win
-
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + previousName, 3);
-
-                    //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(nextID, 0);//sector exit ||level exit||or exit win
-
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + nextName, 0);
-
-
-                } else {
-
-                    //point only to back exit
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsId(previousID, 3);//sector exit ||level exit||or exit win
-
-                    _selectedSection.GetChildRooms().get(0).SetRoomExitsNames("Go To " + previousName, 3);
-
-
-                    //point only to front exit
-                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsId(nextID, 0);//sector exit ||level exit||or exit win
-
-                    _selectedSection.GetChildRooms().get(_selectedSection.GetChildRooms().size() - 1).SetRoomExitsNames("Go To " + nextName, 0);
-
-
-                    //SELECT ROOM
-                    for (int l = 0; l < _selectedSection.GetChildRooms().size(); l++) {
-
-
-                        int exitDoorsNumber = 0;
-
-                        int connections  = Util.GenerateNumberBetween(0, 10);
-
-                        if(connections<1){exitDoorsNumber=0;}
-                        else if(connections<3){exitDoorsNumber=1;}
-                        else if(connections<6){exitDoorsNumber=2;}
-                        else if(connections<8){exitDoorsNumber=3;}
-                        else{exitDoorsNumber=4;}
-
-                        Log.d("make exits x->",String.valueOf(exitDoorsNumber));
+                DungeonRoom referedRoom = new DungeonRoom();
 
 
 
-                        int failedKTimes=0;
 
-                        for (int k = 0; k < exitDoorsNumber; k++) {
 
-                            Log.d("creating exits",String.valueOf(k)+"|"+String.valueOf(exitDoorsNumber-1));
+                //SELECT ROOM
+                for (int l = 0; l < _selectedSection.GetChildRooms().size(); l++) {
 
-                            int formula = l + k + 1 + failedKTimes;
 
-                            for (int i = 0; i < 4 ; i++) {//ON THIS ROOM
+                    //Log.d("creating exits",String.valueOf(k)+"|"+String.valueOf(exitDoorsNumber-1));
 
-                                if (formula < _selectedSection.GetChildRooms().size()) {
-                                    //DELETE ALL DOOR REFS OF TARGET ON THIS ROOM DOORS TO BE REWRITEN ONLY ONCE
-                                    if(_selectedSection.GetChildRooms().get(formula).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
+                    //int formula = l + i + 1;
 
-                                        //cleans possible references to write only one next for loop
-                                        _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
-                                        _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
+                    for (int i = 0; i < 4 ; i++) {//ON THIS ROOM
 
-                                    }
-                                }
+                        int formula = l + i + 1;
+                        if (formula < _selectedSection.GetChildRooms().size()) {
+                            //DELETE ALL DOOR REFS OF TARGET ON THIS ROOM DOORS TO BE REWRITEN ONLY ONCE
+                            if(_selectedSection.GetChildRooms().get(formula).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
 
-                                //DELETE ALL DOOR REFS IF EQUAL OF THIS SAME ROOM
-                                if(_selectedSection.GetChildRooms().get(l).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
+                                //cleans possible references to write only one next for loop
+                                _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
+                                _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
 
-                                    //cleans possible references to write only one next for loop
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
-
-                                }
                             }
+                        }
 
+                        //DELETE ALL DOOR REFS IF EQUAL OF THIS SAME ROOM
+                        if(_selectedSection.GetChildRooms().get(l).RoomID() == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(i)) {
 
-                            if (_selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(k) == 0) {
-
-                                Log.d("creating exits","empty exit available");
-
-
-
-                                if (formula < _selectedSection.GetChildRooms().size()) {
-
-                                    Log.d("creating exits","enough room forward");
-
-
-
-
-                                    //SETS DOOR K of this room to the FORMULA.ROOMID target room
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(_selectedSection.GetChildRooms().get(formula).RoomID(), k);
-
-                                    //SETS DOOR K of this room to the FORMULA.ROOMNAME target room
-                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomName()), k);
-                                   // _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomID()), k);
-
-
-                                    for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM
-                                        //DELETES REF ON DOOR OF TARGET OF THE ACTUAL ROOM
-                                        if (_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == _selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(k)) {
-
-                                            //cleans possible references to write only one next for loop
-                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(0, i);
-                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("", i);
-
-                                        }
-
-                                    }
-
-                                    for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM{
-                                        //SETS REF OF ACTUAL ROOM AT TARGET ROOM
-                                        if(_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == 0 ) {
-
-                                            //this sets the door 0 ate the targeted room to the one that target it
-                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(_selectedSection.GetChildRooms().get(l).RoomID(), i);
-                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("Go To " + String.valueOf(_selectedSection.GetChildRooms().get(l).RoomName()), i);
-                                           // _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("Go To " + String.valueOf(_selectedSection.GetChildRooms().get(l).RoomID()), i);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }else{
-                                failedKTimes++;
-                            }
+                            //cleans possible references to write only one next for loop
+                            _selectedSection.GetChildRooms().get(l).SetRoomExitsId(0, i);
+                            _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("", i);
 
                         }
                     }
 
+                    for (int j = 0; j < 4 ; j++) {//ON THIS ROOM
+
+                        int formula = l + j + 1;
+
+
+                        if (formula < _selectedSection.GetChildRooms().size()) {
+
+                            //Log.d("creating exits","enough room forward");
+
+                            if(_selectedSection.GetChildRooms().get(l).GetRoomExitIdByIndex(j) == 0){
+
+                                if(Util.GenerateNumberBetween(0,4)>j){
+
+                                    //SETS DOOR K of this room to the FORMULA.ROOMID target room
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsId(_selectedSection.GetChildRooms().get(formula).RoomID(), j);
+
+                                    //SETS DOOR K of this room to the FORMULA.ROOMNAME target room
+                                    _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomName()), j);
+                                    // _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomID()), k);
+
+                                }
+
+                                for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM
+                                    //DELETES REF ON DOOR ON TARGET OF THE ACTUAL ROOM
+                                    if (_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == _selectedSection.GetChildRooms().get(l).RoomID()) {
+
+                                        //cleans possible references to write only one next for loop
+                                        _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(0, i);
+                                        _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("", i);
+
+                                    }
+
+                                }
+
+                                    for (int i = 0; i < 4 ; i++) {//ON TARGET ROOM
+                                        if(Util.GenerateNumberBetween(0,8)>i){
+                                        //SETS REF OF ACTUAL ROOM AT TARGET ROOM
+                                        if(_selectedSection.GetChildRooms().get(formula).GetRoomExitIdByIndex(i) == 0 ) {
+
+                                            //this sets the door 0 at the targeted room to the one that target it
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsId(_selectedSection.GetChildRooms().get(l).RoomID(), i);
+                                            _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("Go To " + String.valueOf(_selectedSection.GetChildRooms().get(l).RoomName()), i);
+                                            // _selectedSection.GetChildRooms().get(formula).SetRoomExitsNames("Go To " + String.valueOf(_selectedSection.GetChildRooms().get(l).RoomID()), i);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
+
+                if(m == 0 && n == 0){
+
+                    if( childLevels.get(n).GetChildSections().get(m).GetChildRooms().size()==1) {
+                        if(childLevels.get(n).GetChildSections().size()>1){
+                            referedRoom = childLevels.get(n).GetChildSections().get(m+1).GetChildRooms().get(0);
+                        }else{
+                            referedRoom = childLevels.get(n+1).GetChildSections().get(0).GetChildRooms().get(0);
+                        }
+                    }else{
+                        referedRoom = childLevels.get(n).GetChildSections().get(0).GetChildRooms().get(1);
+                    }
+
+
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsId(referedRoom.RoomID(), 0);
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsNames("Go To " + referedRoom.RoomName(), 0);
+
+                }
+
+                if (m > 0) {
+
+                    referedRoom = childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms()
+                            .get(childLevels.get(n).GetChildSections().get(m - 1).GetChildRooms().size() - 1);
+
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsId(referedRoom.RoomID(), 3);
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsNames("Go To " + referedRoom.RoomName(), 3);
+
+
+
+
+                } else if (m == 0) {
+                    if (n > 0) {
+
+                        referedRoom = childLevels.get(n - 1).GetChildSections().get(childLevels.get(n - 1).GetChildSections().size()-1).GetChildRooms()
+                                .get(childLevels.get(n - 1).GetChildSections().get(childLevels.get(n - 1).GetChildSections().size()-1).GetChildRooms().size() - 1);
+
+                        childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsId(referedRoom.RoomID(), 3);
+                        childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(0).SetRoomExitsNames("Go To " + referedRoom.RoomName(), 3);
+
+                    }
+                }
+
+
+
+                //Log.d("#######","INJECT FORWARD DOOR REF");
+                if (m < childLevels.get(n).GetChildSections().size() - 1) {
+
+                    referedRoom = childLevels.get(n).GetChildSections().get(m + 1).GetChildRooms().get(0);
+
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).SetRoomExitsId(referedRoom.RoomID(), 0);//sector exit ||level exit||or exit win
+                    childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).SetRoomExitsNames("Go To " + referedRoom.RoomName(), 0);
+
+                    //Log.d("*", "ROOM ID: "+String.valueOf(childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).RoomID()));
+
+                    //Log.d("*", "LEVEL: "+String.valueOf(n));Log.d("SECTION", String.valueOf(m));
+                    //Log.d("*", "INJECTION: "+String.valueOf(referedRoom.RoomID()));
+                    //Log.d("*", "CONFIRMATION: "+String.valueOf(childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).GetRoomExitIdByIndex(0)));
+
+
+                } else if (m == childLevels.get(n).GetChildSections().size() - 1) {
+                    if (n < childLevels.size() - 1) {
+
+                        referedRoom =childLevels.get(n + 1).GetChildSections().get(0).GetChildRooms().get(0);
+
+                        childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).SetRoomExitsId(referedRoom.RoomID(), 0);//sector exit ||level exit||or exit win
+                        childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).SetRoomExitsNames("Go To " + referedRoom.RoomName(), 0);
+
+                        //Log.d("*", "ROOM ID: "+String.valueOf(childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).RoomID()));
+
+                        //Log.d("*", "LEVEL: "+String.valueOf(n));Log.d("SECTION", String.valueOf(m));
+                        //Log.d("*", "INJECTION: "+String.valueOf(referedRoom.RoomID()));
+                        //Log.d("*", "CONFIRMATION: "+String.valueOf(childLevels.get(n).GetChildSections().get(m).GetChildRooms().get(childLevels.get(n).GetChildSections().get(m).GetChildRooms().size() - 1).GetRoomExitIdByIndex(0)));
+
+                    }
+                }
             }
         }
-
     }
 
     //-----------------------------------------
@@ -356,20 +361,21 @@ public class Dungeon {
         listDungeonRooms.clear();
 
         for (DungeonLevel n : childLevels) {
-            Log.d("Level Name", n.GetDungeonLevelName());
-            Log.d("-vv-","-vv-");
+            Log.d("*","Level Name: "+ n.GetDungeonLevelName());
+            Log.d("----","----");
             for (DungeonSection m : n.GetChildSections()) {
-                Log.d("Section Name", m.GetDungeonSectionName());
-                Log.d("-vv-","-vv-");
+                Log.d("*","Section Name: "+ m.GetDungeonSectionName());
+                Log.d("----","----");
                 for (DungeonRoom l : m.GetChildRooms()) {
-                    Log.d("Room Name", l.RoomName());
-                    Log.d("Room ID", String.valueOf(l.RoomID()));
+                    Log.d("####","####");
+                    Log.d("*","Room Name: "+ l.RoomName());
+                    Log.d("*","Room ID: "+ String.valueOf(l.RoomID()));
                     Log.d("-vv-","-vv-");
                     for (int i = 0; i <4 ; i++) {
-                        Log.d("Door Name", l.GetRoomExitNameByIndex(i));
-                        Log.d("Door ID", String.valueOf(l.GetRoomExitIdByIndex(i)));
+                        Log.d("*", "Door Name: "+l.GetRoomExitNameByIndex(i));
+                        Log.d("*","Door ID: "+ String.valueOf(l.GetRoomExitIdByIndex(i)));
                     }
-                    Log.d("----","----");
+
                 }
             }
         }

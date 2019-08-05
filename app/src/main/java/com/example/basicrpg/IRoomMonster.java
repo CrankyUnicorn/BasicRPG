@@ -9,6 +9,8 @@ public interface IRoomMonster {
 
     public boolean MonsterDead();
 
+    public int MonsterImage();
+
     public int MonsterDamage();
     public int MonsterHealth();
     public int MonsterArmor();
@@ -16,5 +18,7 @@ public interface IRoomMonster {
 
     public int MonsterAttacks();
 	public boolean MonsterDefends(int opponentHitDodge, int opponentAttack );
-	
+
+
+    public void FightFoe();
 }

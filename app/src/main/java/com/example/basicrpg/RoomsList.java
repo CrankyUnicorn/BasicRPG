@@ -25,9 +25,8 @@ public class RoomsList {
     //CONSTRUCTOR OVERLOAD
     private RoomsList(int _numberOfRooms){
 
-        GenerateRooms(_numberOfRooms);
 
-        numberOfRooms = roomsList.size();
+
     }
 
 	//-----------------
@@ -37,6 +36,7 @@ public class RoomsList {
 	private DungeonRoom EntranceRoom(){
 
         int[] entranceDoors = {2,0,0,0};
+        int selectedImage=ImageReferences.imageOutside[Util.GenerateNumberBetween(2,ImageReferences.imageOutside.length)];
         String[] entranceDoorsDescription = {"Enter Dungeon","","",""};
 
             DungeonRoom DungeonRoomOut = new DungeonRoom(
@@ -47,7 +47,8 @@ public class RoomsList {
                     "Entrance",
                     "You find yourself at the entrance of a Dungeon",
                     true,
-                    ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length)],
+                    selectedImage,
+                    selectedImage,
                     entranceDoors,
                     entranceDoorsDescription
             );
@@ -69,6 +70,7 @@ public class RoomsList {
                 "Exit",
                 "You found yourself out of the dungeon",
                 true,
+                ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length)],
                 ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length)],
                 entranceDoors,
                 entranceDoorsDescription
@@ -96,7 +98,7 @@ public class RoomsList {
                     DungeonNameGenerator.GenerateRoomName(),
                     DungeonNameGenerator.GenerateRoomDescription(),
                     false,
-                    ImageReferences.imageCastle[Util.GenerateNumberBetween(0,ImageReferences.imageCastle.length)],
+                    0,0,
                     entranceDoors,
                     entranceDoorsDescription
             );
@@ -110,7 +112,33 @@ public class RoomsList {
         //Log.d("Room Zero Names : ", Arrays.toString(roomsList.get(0).RoomExitsNames()));
     }
 
-  
+    //AUX BUILDER
+    private DungeonRoom GenerateRandomRoom(){
+
+            int[] entranceDoors={0,0,0,0};
+            String[] entranceDoorsDescription={"","","",""};
+
+            DungeonRoom DungeonRoomOut = new DungeonRoom(
+                    TrapsList.GetRandomTrap(),
+                    MonstersList.GetRandomMonster(),
+                    TreasuresList.GetRandomTreasure(),
+                    0,
+                    DungeonNameGenerator.GenerateRoomName(),
+                    DungeonNameGenerator.GenerateRoomDescription(),
+                    false,
+                    0,0,
+                    entranceDoors,
+                    entranceDoorsDescription
+            );
+
+        Log.d("Generated Room","Done!");
+        //Log.d("RoomList Q:", String.valueOf(roomsList.size()));
+        //Log.d("Room Zero Ids: ", Arrays.toString(roomsList.get(0).RoomExitsId()));
+        //Log.d("Room Zero Names : ", Arrays.toString(roomsList.get(0).RoomExitsNames()));
+
+        return DungeonRoomOut;
+
+    }
 	//---------------------
 
     //AUX
@@ -140,10 +168,7 @@ public class RoomsList {
     //AUX
     public DungeonRoom GetRandomRoom(){
 
-
-        DungeonRoom selectedRoom = roomsList.get(Util.GenerateNumberBetween(1, roomsList.size()));
-
-        return CloneDungeonRoom(selectedRoom);
+        return CloneDungeonRoom(GenerateRandomRoom());
     }
 
     //AUX
@@ -169,7 +194,8 @@ public class RoomsList {
                 room.RoomName(),
                 room.RoomDescription(),
                 room.RoomExplored(),
-                room.RoomImage(),
+                room.RoomImage(true),
+                room.RoomImage(true),
                 room.GetRoomExitsId(),
                 room.GetRoomExitsNames()
         );

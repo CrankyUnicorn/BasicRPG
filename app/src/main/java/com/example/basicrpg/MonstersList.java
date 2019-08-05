@@ -26,8 +26,16 @@ public class MonstersList {
 
         for(int i = 0 ; i < _monstersQuantity; i++){
 
-            RoomMonster generatedMonster = new RoomMonster(	true, DungeonNameGenerator.GenerateMonsterName(),
-                                                            DungeonNameGenerator.GenerateMonsterDescription());
+            RoomMonster generatedMonster = new RoomMonster(	true,
+                    DungeonNameGenerator.GenerateMonsterName(),
+                    DungeonNameGenerator.GenerateMonsterDescription(),
+                    false,
+                    ImageReferences.imageFoe[Util.GenerateNumberBetween(0,ImageReferences.imageFoe.length)],
+                    Util.GenerateNumberBetween(1,6),//damage
+                    Util.GenerateNumberBetween(6,12),//health
+                    Util.GenerateNumberBetween(1,3),//armor
+                    Util.GenerateNumberBetween(1,6));//hit dodge
+
 
             monstersList.add(generatedMonster);
         }
@@ -36,7 +44,12 @@ public class MonstersList {
 
     private void NoMonster(){
 
-        RoomMonster generatedMonster = new RoomMonster(false,"No Monster","No Description");
+        RoomMonster generatedMonster = new RoomMonster(false,//monster present
+                "No Monster",//name
+                "No Description",//description
+                false,
+                0,
+                0 ,0 ,0 ,0);//damage, health, armor, hit dodge
 
         monstersList.add(generatedMonster);
     }

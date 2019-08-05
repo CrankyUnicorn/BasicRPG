@@ -2,6 +2,8 @@ package com.example.basicrpg;
 
 public interface IRoomTrap {
 
+    public boolean TrapPresent();
+
     public String TrapName();
 
     public boolean TrapDisarmed();
