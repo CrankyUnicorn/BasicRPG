@@ -254,13 +254,46 @@ public class ImageReferences {
     };
 	
 	
-	  public static final int[] imageFoe = { R.drawable.foe01,
-	  R.drawable.foe02,
-	  R.drawable.foe03
+	  public static final int[] imageFoe = {
+	          R.drawable.foe01,
+              R.drawable.foe02,
+              R.drawable.foe03
     };
 	
-	public static final int[] imageCharacter = { R.drawable.char01,
-	  R.drawable.char02
+	public static final int[] imageCharacter = {
+	        R.drawable.char01,
+	        R.drawable.char02
 	  
+    };
+
+    public static final int[] imageSlashFoe = {
+            R.drawable.slash00,
+            R.drawable.slash01,
+            R.drawable.slash02,
+            R.drawable.slash03
+
+    };
+
+
+    public static final int[] imageInvestigate = {
+            R.drawable.invest00,
+            R.drawable.invest01,
+            R.drawable.invest02
+
+    };
+
+
+    public static final int[] imageTrap = {
+            R.drawable.trap00,
+            R.drawable.trap01,
+            R.drawable.trap02
+
+    };
+
+
+    public static final int[] imageTresure = {
+            R.drawable.treasu00,
+            R.drawable.treasu01
+
     };
 }

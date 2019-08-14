@@ -1,3 +1,9 @@
+/*
+* BASIC RPG - DUNGEON CRAWLER
+* CRANKYUNICORN 2019
+* azedo.peter@gmail.com
+*/
+
 package com.example.basicrpg;
 
 import java.util.HashMap;
@@ -64,13 +70,19 @@ public class DungeonRoom{
 	public String RoomName(){
 		return roomName;
 	}
-	 
-	public String RoomDescription(){
+
+	public String RoomDescription(){ return roomDescription; }
+
+	public String RoomDescriptionOutput(){
     	String output="";
+
 		output += roomDescription;
-		output += thisRoomMonster.MonsterPresent() ? thisRoomMonster.MonsterDead() ?"\n Theres a dead foe on the ground" :"\n Theres a foe here": "\n There is no one here";
-		output += thisRoomTrap.TrapDetected() ? "\n You found a trap on this room" : "\n You found no trap on this room";
-		//output += thisRoomTreasure.TreasureVisible() ? "\n You found a treasure on this room" : "\n You found no treasure on this room";
+		output += "\n";
+		output += thisRoomMonster.MonsterPresent() ? thisRoomMonster.MonsterDead() ? "There is a dead body on the ground. " :"": "";
+		output += thisRoomTrap.TrapDetected() ? thisRoomTrap.TrapDisarmed() ? "" : "You found a trap on this room. " : "";
+		output += thisRoomTreasure.TreasureVisible() ? "You found a treasure on this room. " : "";
+		output += "\n";
+		output += Player.GetCurrentPlayer().GetPlayerMiniJournal();
 
     	return output ;
 	}
@@ -78,27 +90,33 @@ public class DungeonRoom{
 	public void RemapRoomImage(int _index) {
     	int tempImageRefLight = 0;
     	int tempImageRefDark = 0;
+    	int tempImageRefNumb = 0;
 
     	switch(_index){
     		case 0 :
-    			tempImageRefLight = ImageReferences.imageCastle[Util.GenerateNumberBetween(0,ImageReferences.imageCastle.length)];
-				tempImageRefDark = ImageReferences.imageCastleDark[Util.GenerateNumberBetween(0,ImageReferences.imageCastleDark.length)];
+				tempImageRefNumb = Util.GenerateNumberBetween(0,ImageReferences.imageCastle.length);
+    			tempImageRefLight = ImageReferences.imageCastle[tempImageRefNumb];
+				tempImageRefDark = ImageReferences.imageCastleDark[tempImageRefNumb];
     			break;
 			case 1 :
-				tempImageRefLight = ImageReferences.imageDungeon[Util.GenerateNumberBetween(0,ImageReferences.imageDungeon.length)];
-				tempImageRefDark = ImageReferences.imageDungeonDark[Util.GenerateNumberBetween(0,ImageReferences.imageDungeonDark.length)];
+				tempImageRefNumb = Util.GenerateNumberBetween(0,ImageReferences.imageDungeon.length);
+				tempImageRefLight = ImageReferences.imageDungeon[tempImageRefNumb];
+				tempImageRefDark = ImageReferences.imageDungeonDark[tempImageRefNumb];
 				break;
 			case 2 :
-				tempImageRefLight = ImageReferences.imageCatacomb[Util.GenerateNumberBetween(0,ImageReferences.imageCatacomb.length)];
-				tempImageRefDark = ImageReferences.imageCatacombDark[Util.GenerateNumberBetween(0,ImageReferences.imageCatacombDark.length)];
+				tempImageRefNumb = Util.GenerateNumberBetween(0,ImageReferences.imageCatacomb.length);
+				tempImageRefLight = ImageReferences.imageCatacomb[tempImageRefNumb];
+				tempImageRefDark = ImageReferences.imageCatacombDark[tempImageRefNumb];
 				break;
 			case 3 :
-				tempImageRefLight = ImageReferences.imageSewer[Util.GenerateNumberBetween(0,ImageReferences.imageSewer.length)];
-				tempImageRefDark = ImageReferences.imageSewerDark[Util.GenerateNumberBetween(0,ImageReferences.imageSewerDark.length)];
+				tempImageRefNumb = Util.GenerateNumberBetween(0,ImageReferences.imageSewer.length);
+				tempImageRefLight = ImageReferences.imageSewer[tempImageRefNumb];
+				tempImageRefDark = ImageReferences.imageSewerDark[tempImageRefNumb];
 				break;
 			case 4 :
-				tempImageRefLight = ImageReferences.imageCave[Util.GenerateNumberBetween(0,ImageReferences.imageCave.length)];
-				tempImageRefDark = ImageReferences.imageCaveDark[Util.GenerateNumberBetween(0,ImageReferences.imageCaveDark.length)];
+				tempImageRefNumb = Util.GenerateNumberBetween(0,ImageReferences.imageCave.length);
+				tempImageRefLight = ImageReferences.imageCave[tempImageRefNumb];
+				tempImageRefDark = ImageReferences.imageCaveDark[tempImageRefNumb];
 				break;
 			default:break;
     	}
@@ -119,28 +137,30 @@ public class DungeonRoom{
 	}
 
 
-	//ACTIONS----------
+	//ACTIONS ****************************************************************************
 	public String GetActionsName(int indexActionButton) {
 		if(indexActionButton==0) {
 			if (thisRoomMonster.MonsterPresent() == true && thisRoomMonster.MonsterDead() == false) {
-				return "Fight Foe";
+				return GameSettings.PLAYER_ROOM_ACTIONS[1];//"Fight Foe"
 
 			} else if (roomExplored == false) {
 
-				return "Investigate";
+				return GameSettings.PLAYER_ROOM_ACTIONS[2];//"Investigate"
 
 			} else if (thisRoomTrap.TrapName() != "No Trap" && thisRoomTrap.TrapDetected() == true && thisRoomTrap.TrapDisarmed() == false) {
-				return "Disarm Trap";
+				return GameSettings.PLAYER_ROOM_ACTIONS[3];//"Disarm Trap"
 
-			} else if (thisRoomTreasure.TreasurePresent() == true && thisRoomTreasure.TreasureVisible() == true) {
-				return "Open Treasure";
+			} else if (thisRoomTreasure.TreasureName() != "No Treasure" && thisRoomTreasure.TreasurePresent() == true && thisRoomTreasure.TreasureVisible() == true && thisRoomTreasure.GetItem()!=null) {
+				return GameSettings.PLAYER_ROOM_ACTIONS[4];//"Open Treasure"
+			}else{
+				return GameSettings.PLAYER_ROOM_ACTIONS[0];//"No actions"
 			}
 		}
 
 
 		if(indexActionButton==1) {
 			if (true) {
-				return "Map";
+				return GameSettings.PLAYER_ROOM_ACTIONS[5];
 
 			}
 		}
@@ -158,33 +178,35 @@ public class DungeonRoom{
 
 	public void DoActions (String _actionName){
 
-		switch (_actionName){
-			case "Fight Foe":
-				this.thisRoomMonster.FightFoe();//fight foe;
-			break;
-			case "Investigate Room": 
-				this.InvestigateRoom();	//looks for traps and treasures in room
-			break;
-			case "Disarm Trap":
-				this.thisRoomTrap.DisarmTrap(Util.GenerateNumberBetween(1,13));//looks for traps and treasures in room
-			break;
-			case "Open Treasure":
-				this.thisRoomTreasure.OpenTreasure() ;//looks for traps and treasures in room
-			break;
-			
-			default: ;//get damaged if there is a foe or a trap
-			break;
-		}
-		
+		if (GameSettings.PLAYER_ROOM_ACTIONS[1]==_actionName){
+			this.thisRoomMonster.FightFoe();//fight foe;
+		}else
+		if (GameSettings.PLAYER_ROOM_ACTIONS[2]==_actionName){
+			this.InvestigateRoom();	//looks for traps and treasures in room
+		}else
+		if (GameSettings.PLAYER_ROOM_ACTIONS[3]==_actionName){
+			this.thisRoomTrap.DisarmTrap();//looks for traps and treasures in room
+		}else
+		if (GameSettings.PLAYER_ROOM_ACTIONS[4]==_actionName){
+			this.thisRoomTreasure.OpenTreasure();//looks for traps and treasures in room
+		}else
+		if (GameSettings.PLAYER_ROOM_ACTIONS[5]==_actionName){}//journal
 		
 	}
 
 	private void InvestigateRoom(){
-	 
-		if(thisRoomTrap.TrapPresent()==true && thisRoomTrap.TrapDetected()==false && thisRoomTrap.TrapDisarmed()==false ){
-			
-		}
-		this.roomExplored = true;
+	 	Player.GetCurrentPlayer().SetPlayerLastTurnActions("PLAYER_INVESTIGATE");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("PLAYER_INVESTIGATE");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("PLAYER_INVESTIGATE");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+
+		Player.GetCurrentPlayer().SetPlayerJournal("You investigated the room");
+
+				this.thisRoomTrap.DetectTrap();
+				this.thisRoomTreasure.FindTreasure();
+				this.roomExplored = true;
 	}
 
 
@@ -248,7 +270,6 @@ public class DungeonRoom{
 
 
 	}
-
 
 
 }

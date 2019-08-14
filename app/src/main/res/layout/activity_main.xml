@@ -115,7 +115,18 @@
         android:paddingHorizontal="30dp"
         android:contentDescription="View"
         android:src="@drawable/char01" />
-
+    <ImageView
+        android:id="@+id/dungeonImageViewEffects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/mainpartthree"
+        android:paddingTop="13dp"
+        android:paddingHorizontal="30dp"
+        android:contentDescription="View"
+        android:src="@drawable/nofoe00" />
 
     <ImageView
         android:id="@+id/mainpartfive"
@@ -127,17 +138,58 @@
         android:src="@drawable/mainfive"
         android:layout_centerHorizontal="true"
         android:layout_margin="0dp" />
-    <TextView
-        android:id="@+id/roomDescription"
+    <ImageView
+        android:id="@+id/mainbarsrails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:layout_below="@+id/mainpartfour"
-        android:layout_marginTop="5dp"
-        android:paddingHorizontal="30dp"
-        android:isScrollContainer="true"
-        android:maxLines="3"
-        android:scrollbars="vertical"
-        android:text="RoomDescription" />
+        android:src="@drawable/mainbarrails"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="0dp" />
+    <ImageView
+        android:id="@+id/mainbars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/mainpartfour"
+        android:src="@drawable/mainbars"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="0dp" />
+    <ImageView
+        android:id="@+id/mainredbar"
+        android:layout_width="650px"
+        android:layout_height="22px"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/mainpartfour"
+        android:layout_marginTop="59px"
+        android:layout_marginLeft="275px"
+        android:src="@drawable/mainredbar"/>
+    <ImageView
+        android:id="@+id/mainyellowbar"
+        android:layout_width="650px"
+        android:layout_height="22px"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/mainpartfour"
+        android:layout_marginTop="139px"
+        android:layout_marginLeft="275px"
+        android:src="@drawable/mainyellowbar" />
+    <TextView
+        android:id="@+id/characterStats"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:layout_below="@+id/mainpartfour"
+        android:layout_margin="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingTop="18dp"
+        android:singleLine="true"
+        android:textSize="36dp"
+        android:text="N" />
+
 
 
     <ImageView
@@ -150,68 +202,19 @@
         android:src="@drawable/mainsix"
         android:layout_centerHorizontal="true"
         android:layout_margin="0dp" />
-    <ImageView
-        android:id="@+id/mainbarsrails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/mainpartfive"
-        android:src="@drawable/mainbarrails"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="0dp" />
-    <ImageView
-        android:id="@+id/mainbars"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/mainpartfive"
-        android:src="@drawable/mainbars"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="0dp" />
-    <ImageView
-        android:id="@+id/mainredbar"
-        android:layout_width="650px"
-        android:layout_height="22px"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/mainpartfive"
-        android:layout_marginTop="70px"
-        android:layout_marginLeft="275px"
-        android:src="@drawable/mainredbar"/>
-
-    <ImageView
-        android:id="@+id/mainyellowbar"
-        android:layout_width="650px"
-        android:layout_height="22px"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/mainpartfive"
-        android:layout_marginTop="150px"
-        android:layout_marginLeft="275px"
-        android:src="@drawable/mainyellowbar" />
-    <TextView
-        android:id="@+id/characterStats"
-        android:layout_width="match_parent"
-        android:layout_height="200px"
-        android:layout_below="@+id/mainpartfive"
-        android:layout_margin="0dp"
-        android:paddingHorizontal="50dp"
-        android:paddingTop="18dp"
-        android:singleLine="true"
-        android:textSize="36dp"
-        android:text="N" />
     <TextView
         android:id="@+id/characterInventory"
         android:layout_width="match_parent"
-        android:layout_height="350px"
+        android:layout_height="450px"
         android:layout_below="@+id/characterStats"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35dp"
         android:paddingHorizontal="40dp"
         android:scrollbars="vertical"
-        android:maxLines="6"
+        android:maxLines="12"
         android:text="CharacterInventory" />
+
+
+
 
 
     <ImageView
@@ -224,12 +227,11 @@
         android:src="@drawable/mainseven"
         android:layout_centerHorizontal="true"
         android:layout_margin="0dp" />
-
     <Button
         android:id="@+id/buttonOne"
-        android:layout_width="wrap_content"
+        android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartsix"
         android:layout_above="@+id/mainparteight"
@@ -239,12 +241,11 @@
         android:onClick="buttonOneClick"
         android:layout_marginLeft="30px"
         android:text="ButtonOne" />
-
     <Button
         android:id="@+id/buttonTwo"
         android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartsix"
         android:layout_above="@+id/mainparteight"
@@ -257,9 +258,9 @@
 
     <Button
         android:id="@+id/buttonThree"
-        android:layout_width="wrap_content"
+        android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartsix"
         android:layout_above="@+id/mainparteight"
@@ -283,9 +284,9 @@
         android:layout_margin="0dp" />
     <Button
         android:id="@+id/buttonFour"
-        android:layout_width="wrap_content"
+        android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartseven"
         android:layout_above="@+id/mainpartnine"
@@ -295,12 +296,11 @@
         android:layout_marginLeft="30px"
         android:onClick="buttonFourClick"
         android:text="ButtonFour" />
-
     <Button
         android:id="@+id/buttonFive"
         android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartseven"
         android:layout_above="@+id/mainpartnine"
@@ -310,12 +310,11 @@
         android:layout_margin="0dp"
         android:onClick="buttonFiveClick"
         android:text="ButtonFive" />
-
     <Button
         android:id="@+id/buttonSix"
-        android:layout_width="wrap_content"
+        android:layout_width="350px"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:textSize="10dp"
 
         android:layout_below="@+id/mainpartseven"
         android:layout_above="@+id/mainpartnine"
@@ -339,6 +338,33 @@
         android:src="@drawable/mainnine"
         android:layout_centerHorizontal="true"
         android:layout_margin="0dp" />
+
+
+
+    <ImageView
+        android:id="@+id/mainoverlayscreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/mainparttwo"
+        android:src="@drawable/overlaywindow"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="0dp"
+        android:visibility="invisible"
+        android:clickable="false"/>
+    <TextView
+        android:id="@+id/mainoverlayscreenText"
+        android:layout_width="match_parent"
+        android:layout_height="1300px"
+        android:layout_below="@+id/mainparttwo"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="40dp"
+        android:scrollbars="vertical"
+        android:maxLines="30"
+        android:text="Journal"
+        android:visibility="invisible"
+        android:clickable="false"/>
 
 
 </RelativeLayout>

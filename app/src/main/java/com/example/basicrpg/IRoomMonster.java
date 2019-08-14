@@ -17,8 +17,10 @@ public interface IRoomMonster {
     public int MonsterHitDodge();
 
     public int MonsterAttacks();
-	public boolean MonsterDefends(int opponentHitDodge, int opponentAttack );
+    public boolean MonsterDefends(int opponentHitDodge, int opponentAttack );
 
 
     public void FightFoe();
+	
+    public boolean FleeFoe();
 }

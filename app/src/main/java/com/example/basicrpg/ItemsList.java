@@ -23,6 +23,7 @@ public class ItemsList {
     private ItemsList(){
     //ADDS ITEMS TO LISTING FOR RANDOM TREASURE USE OR LOT
 
+        NoItem();
         Torch();
         FlaskRadiance();
 
@@ -33,6 +34,7 @@ public class ItemsList {
 
             Item generatedItem = new Item("No Item",
                     "No Description",
+                    0,
                     false);
 
             itemsList.add(generatedItem);
@@ -42,6 +44,7 @@ public class ItemsList {
 
         Item generatedItem = new Item("Torch",
                 "Small flimsy torch to ligth your way",
+                5,
                 true);
 
         itemsList.add(generatedItem);
@@ -50,16 +53,19 @@ public class ItemsList {
 
         Item generatedItem = new Item("Flask of Radiance",
                 "A small flask fill with glowing worms",
+                10,
                 true);
 
         itemsList.add(generatedItem);
     }
 
-//SINGEL ITEM ITEM
+
+	//SINGEL ITEM ITEM
     public static Item MementoMori(){
 
         Item item = new Item(	"Memento Mori",
                 "Something from the past",
+                1,
                 false);
 
 
@@ -71,6 +77,7 @@ public class ItemsList {
 
         Item item = new Item(   "Old Rusty Key",
                 "This old looking key emanates an aura of ill intent.",
+                1,
                 false);
 
 
@@ -80,13 +87,14 @@ public class ItemsList {
 
     //ACESSOR
     public static Item GetItemFromList(int index){
-        return itemsList.get(index);
+
+        return CloneItem(itemsList.get(index<itemsList.size()?index:0));
     }
 
 
-    public static  Item GetRandomItem(){
-        Log.d("ItemList","Create Item!");
-        return itemsList.get(Util.GenerateNumberBetween(0,itemsList.size()));
+    public static Item GetRandomItem(){
+        //Log.d("ItemList","Create Item!");
+        return CloneItem(itemsList.get(Util.GenerateNumberBetween(0,itemsList.size())));
     }
 
     public int GetItemsListLength(){
@@ -95,5 +103,18 @@ public class ItemsList {
 
 
 	//AUX FUNCTS
+	
+	//AUX CLONER
+    public static Item CloneItem (Item _item){
+
+        Item newItemOut = new Item(
+				_item.GetItemName(),
+                _item.GetItemDescription(),
+				_item.getItemQuantity(),
+				_item.IsIlluminator()
+		);
+        
+        return newItemOut;
+    }
 
 }

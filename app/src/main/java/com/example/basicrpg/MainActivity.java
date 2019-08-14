@@ -1,8 +1,15 @@
+/*
+* BASIC RPG - DUNGEON CRAWLER
+* CRANKYUNICORN 2019
+* azedo.peter@gmail.com
+*/
+
 package com.example.basicrpg;
 
         import androidx.appcompat.app.AppCompatActivity;
 
         import android.content.Intent;
+        import android.graphics.Color;
         import android.media.MediaPlayer;
         import android.os.Bundle;
 
@@ -20,23 +27,25 @@ package com.example.basicrpg;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "TEST_TAG";
-
-    //private static final MainActivity currentMainActivity = new MainActivity();
-
-    //public static MainActivity GetCurrentMainActivity() {return currentMainActivity;}
 
     Timer myTimer;
+    boolean animationPlaying;
 
     TextView dungeonNameTitle;
     TextView dungeonLocationTitle;
-    TextView dungeonRoomDescriptionTitle;
+
     ImageView dungeonImageView;
     ImageView dungeonImageViewFoe;
+    ImageView dungeonImageViewEffects;
     ImageView dungeonImageViewChar;
+
+
+    TextView characterIlluminationTitle;
 
     ImageView redbar;
     ImageView yellowbar;
+
+    TextView dungeonRoomDescriptionTitle;
 
     Button doorOneButton;
     Button doorTwoButton;
@@ -45,12 +54,9 @@ public class MainActivity extends AppCompatActivity {
     Button doorFiveButton;
     Button doorSixButton;
 
-    TextView characterStatsTitle;
-    TextView characterInventoryTitle;
+    ImageView overlayWindow;
+    TextView overlayTextView;
 
-
-
-    int imageDungeonEntrance =  R.drawable.nofoe00;
 
     MediaPlayer music;
     MediaPlayer sound;
@@ -61,19 +67,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        animationPlaying=false;
+
         dungeonNameTitle = (TextView) findViewById(R.id.dungeonName);
 
         dungeonLocationTitle = (TextView) findViewById(R.id.dungeonLocation);
-        dungeonRoomDescriptionTitle = (TextView) findViewById(R.id.roomDescription);
-
-        dungeonRoomDescriptionTitle.setMovementMethod(new ScrollingMovementMethod());
 
         dungeonImageView = (ImageView) findViewById(R.id.dungeonImageView);
         dungeonImageViewFoe = (ImageView) findViewById(R.id.dungeonImageViewFoe);
+        dungeonImageViewEffects = (ImageView) findViewById(R.id.dungeonImageViewEffects);
         dungeonImageViewChar = (ImageView) findViewById(R.id.dungeonImageViewChar);
+
+        characterIlluminationTitle = (TextView) findViewById(R.id.characterStats);
 
         redbar = (ImageView) findViewById(R.id.mainredbar);
         yellowbar = (ImageView) findViewById(R.id.mainyellowbar);
+
+        dungeonRoomDescriptionTitle = (TextView) findViewById(R.id.characterInventory);
+        dungeonRoomDescriptionTitle.setMovementMethod(new ScrollingMovementMethod());
 
         doorOneButton = (Button) findViewById(R.id.buttonOne);
         doorTwoButton = (Button) findViewById(R.id.buttonTwo);
@@ -82,103 +93,132 @@ public class MainActivity extends AppCompatActivity {
         doorFiveButton = (Button) findViewById(R.id.buttonFive);
         doorSixButton = (Button) findViewById(R.id.buttonSix);
 
-        characterStatsTitle = (TextView) findViewById(R.id.characterStats);
-        characterInventoryTitle = (TextView) findViewById(R.id.characterInventory);
+        overlayWindow = (ImageView) findViewById(R.id.mainoverlayscreen);
+        overlayTextView = (TextView) findViewById(R.id.mainoverlayscreenText);
+        overlayTextView.setMovementMethod(new ScrollingMovementMethod());
 
-        characterInventoryTitle.setMovementMethod(new ScrollingMovementMethod());
 
         outputContent();
 
         PlayMusic();
 
-
-
     }
 
 
-	//########## BUTTON PUSH #######################
-    public void buttonOneClick(View view){//############# ACTIONS ##############
-        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedActionButton(String.valueOf(doorOneButton.getText()));
-        outputContent();
-        CheckIfDead();
+    //########## BUTTON PUSH #######################
+    public void buttonOneClick(View view) {//############# ACTIONS ##############
+
+        if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
+            if (!animationPlaying) {
+                UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedActionButton(String.valueOf(doorOneButton.getText()));
+                AnimateTurn();
+                CheckIfDead();
+            }
+        }
     }
 
-
-    public void buttonTwoClick(View view){
-        ButtonSound();
-        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(0);
-        outputContent();
-        CheckIfDead();
+    public void buttonTwoClick(View view) {
+        if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
+            if (!animationPlaying) {
+                ButtonSound();
+                UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(0);
+                AnimateTurn();
+                CheckIfDead();
+            }
+        }
     }
 
-    public void buttonThreeClick(View view){
-        ButtonSound();
-        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(1);
-        outputContent();
-        CheckIfDead();
+    public void buttonThreeClick(View view) {
+        if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
+            if (!animationPlaying) {
+                ButtonSound();
+                UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(1);
+                AnimateTurn();
+                CheckIfDead();
+            }
+        }
     }
 
-    public void buttonFourClick(View view){//############# OPTIONS 2##############
+    public void buttonFourClick(View view) {//############# JOURNAL ##############
         UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedActionButton(String.valueOf(doorFourButton.getText()));
         outputContent();
         CheckIfDead();
     }
 
-    public void buttonFiveClick(View view){
-        ButtonSound();
-        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(2);
-        outputContent();
-        CheckIfDead();
+    public void buttonFiveClick(View view) {
+        if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
+            if (!animationPlaying) {
+                ButtonSound();
+                UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(2);
+                AnimateTurn();
+                CheckIfDead();
+            }
+        }
     }
 
-    public void buttonSixClick(View view){
-        ButtonSound();
-        UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(3);
-        outputContent();
-        CheckIfDead();
+    public void buttonSixClick(View view) {
+        if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
+            if (!animationPlaying) {
+                ButtonSound();
+                UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(3);
+                AnimateTurn();
+                CheckIfDead();
+            }
+        }
     }
-	
 
 
-
-	//######### OUTPUT ###########
-    private void outputContent(){
+    //######### OUTPUT ###########
+    private void outputContent() {//you dont need to replace this every turns. you only need to replace the ones that area changed
 
         //dungeon stats
         dungeonNameTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonNameTitle());
-
         dungeonLocationTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonLocationTitle());
-        dungeonRoomDescriptionTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomDescriptionTitle());
 
         //image
         dungeonImageView.setImageResource(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomImage());
         dungeonImageViewFoe.setImageResource(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomImageFoe());
+        dungeonImageViewEffects.setImageResource(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomImageEffect());
         dungeonImageViewChar.setImageResource(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomImageChar());
 
+        //player illumination
+        characterIlluminationTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterIlluminationTitle());
+
         //bars
-        redbar.getLayoutParams().width = (int)((650/100)*Player.GetCurrentPlayer().GetPlayerHealth()) ;
+        redbar.getLayoutParams().width = (int) ((650 / 100) * Player.GetCurrentPlayer().GetPlayerHealth());
         redbar.getLayoutParams().height = 22;
         redbar.requestLayout();
-        yellowbar.getLayoutParams().width = (int)((650/100)*Player.GetCurrentPlayer().GetPlayerSanity()) ;
+        yellowbar.getLayoutParams().width = (int) ((650 / 100) * Player.GetCurrentPlayer().GetPlayerSanity());
         yellowbar.getLayoutParams().height = 22;
         yellowbar.requestLayout();
 
+        //room description
+        dungeonRoomDescriptionTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDungeonRoomDescriptionTitle());
+
         //buttons
         doorOneButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetACtivityButtonTitle(0));
+        doorOneButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetACtivityButtonTitle(0) != "" ? true : false);
 
         doorTwoButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(0));
+        doorTwoButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(0) != "" ? true : false);
 
         doorThreeButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(1));
+        doorThreeButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(1) != "" ? true : false);
 
         doorFourButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetACtivityButtonTitle(1));
+        doorFourButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetACtivityButtonTitle(1) != "" ? true : false);
 
         doorFiveButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(2));
+        doorFiveButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(2) != "" ? true : false);
 
         doorSixButton.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(3));
+        doorSixButton.setEnabled(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetDoorButtonTitle(3) != "" ? true : false);
 
-        //player stats
-        characterStatsTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterStatsTitle());
-        characterInventoryTitle.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetCharacterInventoryTitle());
+        //overlay screen
+        overlayWindow.setVisibility(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetOverlayWindow() ? View.VISIBLE : View.INVISIBLE);
+        overlayTextView.setVisibility(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetOverlayWindow() ? View.VISIBLE : View.INVISIBLE);
+        overlayTextView.setText(UserInterfaceIOHandler.GetUserInterfaceIOHandler().GetOverlayText());
+
     }
 
     //MUSIC SOUND PLAY#############################
@@ -192,24 +232,36 @@ public class MainActivity extends AppCompatActivity {
                 music.stop();
                 music.release();
                 music = MediaPlayer.create(this, R.raw.catsouls);
-            } music.start();
+            }
+            music.start();
 
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     public void ButtonSound() {
 
-        int doorSound = Util.GenerateNumberBetween(0,4);
+        int doorSound = Util.GenerateNumberBetween(0, 4);
         int soundRef = 0;
 
-        switch(doorSound){
+        switch (doorSound) {
 
-            case 0: soundRef= R.raw.dooropen01; break;
-            case 1: soundRef= R.raw.dooropen02; break;
-            case 2: soundRef= R.raw.dooropen03; break;
-            case 3: soundRef= R.raw.dooropen04; break;
-            default: break;
+            case 0:
+                soundRef = R.raw.dooropen01;
+                break;
+            case 1:
+                soundRef = R.raw.dooropen02;
+                break;
+            case 2:
+                soundRef = R.raw.dooropen03;
+                break;
+            case 3:
+                soundRef = R.raw.dooropen04;
+                break;
+            default:
+                break;
         }
 
         sound = MediaPlayer.create(this, soundRef);
@@ -219,30 +271,35 @@ public class MainActivity extends AppCompatActivity {
                 sound.stop();
                 sound.release();
                 sound = MediaPlayer.create(this, soundRef);
-            } sound.start();
-        } catch(Exception e) { e.printStackTrace(); }
+            }
+            sound.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-	private void StopAllSounds(){
+    private void StopAllSounds() {
         try {
             if (sound.isPlaying()) {
                 sound.stop();
                 sound.release();
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
         try {
             if (music.isPlaying()) {
                 music.stop();
                 music.release();
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
     }
 
     //###END GAME METHOD###
-    public void EndGame(){
-
+    public void EndGame() {
+        myTimer.cancel();
         StopAllSounds();
         startActivity(new Intent(MainActivity.this, EndActivity.class));
 
@@ -250,159 +307,132 @@ public class MainActivity extends AppCompatActivity {
 
     //###CHECK DEAD###
     private void CheckIfDead() {
-        if (            Player.GetCurrentPlayer().GetPlayerHealth() == 0) {
+        if (Player.GetCurrentPlayer().GetPlayerHealth() == 0) {
             EndGame();
         }
     }
 
 
-
     //############################ SOMETHING ELSE ##########################################
-    public void rollButtonClick(View view) {
 
-        int rolledNumber = rollDice();
+    public void AnimateTurn() {
+        if (!animationPlaying) {
+            animationPlaying=true;
 
-        //imageView.setImageResource(imageDiceDrawables [rolledNumber]);
-
-        rolledNumber++;
-
-        if (rolledNumber == 1) {
-            //crititical fail
-
-        } else if (rolledNumber == 6) {
-            //critical good
-
-        } else{
-            //depends on the value but lets assume is nor good nor bad
-        }
-
-    }
-
-    private int rollDice() {
-
-        Random random = new Random();
-        int randomNumber = random.nextInt(6);
-        return randomNumber;
-
-    }
+            myTimer = new Timer();
+            myTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
 
 
-    private void enableButtons(boolean isEnabled) {
-        doorOneButton.setEnabled(isEnabled);
-        doorTwoButton.setEnabled(isEnabled);
-        doorThreeButton.setEnabled(isEnabled);
-    }
-
-
-    /*
-    public void computerTurn() {
-
-
-        myTimer = new Timer();
-        myTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-
-                //disable the buttons while computer is playing
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        enableButtons(false);
-                    }
-                });
-
-                //roll dice for comp
-                int computerRolledNumber = rollDice();
-
-                //update the image on the ui thread
-                final int finalComputerRolledNumber = computerRolledNumber;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageResource(drawables[finalComputerRolledNumber]);
-                    }
-                });
-
-                computerRolledNumber++;
-
-                //if computer looses, set turnSCore to 0 and enable buttons for user's turn
-                if (computerRolledNumber == 1) {
-                    computerTurnScore = 0;
-                    labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore +
-                            "\n computer rolled a one and lost it's chance";
-
-
-                    //enable buttons, on ui thread
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            enableButtons(true);
-                        }
-                    });
-
-                    //update the label
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            label.setText(Html.fromHtml(labelText));
-                        }
-                    });
-
-                    //cancel the timer, this is exiting out of function
-                    myTimer.cancel();
-
-                }
-
-                //if not 1, add the score to turn score
-                else {
-                    computerTurnScore += computerRolledNumber;
-                    labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
-                            + "\nComputer rolled a " + computerRolledNumber
-                            + compTurnScoreLabel + computerTurnScore;
-
-                    //update the label
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            label.setText(Html.fromHtml(labelText));
-                        }
-                    });
-
-                    //if the turn score is greater than 20 stop rolling and hold(update the comp score and cancel timer)
-                    if (computerTurnScore > 20) {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                enableButtons(true);
+                            switch (Player.GetCurrentPlayer().GetPlayerLastTurnAction()) {
+                                case "FOE_HIT":
+                                    dungeonImageViewEffects.setImageResource(ImageReferences.imageSlashFoe[Util.GenerateNumberBetween(0,ImageReferences.imageSlashFoe.length)]);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(20.0f);
+                                    dungeonImageViewFoe.setColorFilter(Color.argb(127, 255, 127, 127));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(20.0f);
+                                    dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    break;
+                                case "FOE_DODGE":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.dodge00);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(-20.0f);
+                                    //dungeonImageViewFoe.setColorFilter(Color.argb(127, 255, 127, 127));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(20.0f);
+                                    //dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    break;
+                                case "PLAYER_HIT":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.charhit00);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(-20.0f);
+                                    dungeonImageViewFoe.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(-20.0f);
+                                    dungeonImageViewChar.setColorFilter(Color.argb(127, 255, 127, 127));
+                                    break;
+                                case "PLAYER_DODGE":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.dodge01);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(-20.0f);
+                                    //dungeonImageViewFoe.setColorFilter(Color.argb(127, 255, 127, 127));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(20.0f);
+                                    //dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    break;
+                                case "PLAYER_INVESTIGATE":
+                                    dungeonImageViewEffects.setImageResource(ImageReferences.imageInvestigate[Util.GenerateNumberBetween(0,ImageReferences.imageInvestigate.length)]);
+                                    break;
+                                case "PLAYER_TRAP":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.trap01);
+                                    dungeonImageViewChar.setColorFilter(Color.argb(127, 255, 127, 127));
+                                    break;
+                                case "PLAYER_DETECT_TRAP":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.trap00);
+                                    break;
+                                case "PLAYER_DISARM_TRAP":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.trap02);
+                                    break;
+                                case "PLAYER_TREASURE":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.treasu01);
+                                    break;
+                                case "PLAYER_DETECT_TREASURE":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.treasu00);
+                                    break;
+                                case "FOE_ARMOR_BREAK":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.armor00);
+                                    break;
+                                case "NEUTRAL":
+                                    dungeonImageViewEffects.setImageResource(R.drawable.nofoe00);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(0.0f);
+                                    dungeonImageViewFoe.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(0.0f);
+                                    dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    break;
+                                default:
+                                    dungeonImageViewEffects.setImageResource(R.drawable.nofoe00);
+                                    //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
+                                    dungeonImageViewFoe.setX(0.0f);
+                                    dungeonImageViewFoe.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    //dungeonImageViewChar.setImageResource(ImageReferences.imageCharacter[0]);
+                                    dungeonImageViewChar.setX(0.0f);
+                                    dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
+                                    break;
                             }
-                        });
+                        }
+                    });
 
-                        computerOverallScore += computerTurnScore;
-                        computerTurnScore = 0;
-                        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + "\nComputer holds";
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                label.setText(Html.fromHtml(labelText));
+                    Log.d("Actions", Player.GetCurrentPlayer().GetPlayerLastTurnAction());
+
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Player.GetCurrentPlayer().GetPlayerLastTurnAction() == "Empty") {
+
+                                outputContent();
                             }
-                        });
+                        }
+                    });
 
 
+                    if (Player.GetCurrentPlayer().GetPlayerLastTurnAction() == "Empty") {
                         myTimer.cancel();
+                        animationPlaying = false;
+                    } else {
 
-
+                        Player.GetCurrentPlayer().DeletePlayerLastTurnAction();
                     }
-
                 }
-
-            }
-
-        }, 0, 2000);
-
-
+            }, 0, 400);
+        }
     }
-*/
 }

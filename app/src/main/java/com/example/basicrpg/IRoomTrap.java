@@ -14,6 +14,6 @@ public interface IRoomTrap {
     public int TrapToDisarm();
 
     public boolean TriggerTrap();
-	public boolean DetectTrap(int _detectSkill);
-	public boolean DisarmTrap(int _disarmSkill);
+	public boolean DetectTrap();
+	public boolean DisarmTrap();
 }

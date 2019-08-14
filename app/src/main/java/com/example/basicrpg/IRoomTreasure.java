@@ -7,6 +7,9 @@ public interface IRoomTreasure {
     public String TreasureName();
     public String TreasureDescription();
 
+    public int TreasureToDetect();
+    public int TreasureToUnlock();
+
     public boolean TreasureVisible();
     public boolean TreasureLocked();
 

@@ -27,4 +27,7 @@ public class GameSettings {
 	public static final int PLAYER_DAMAGE = 4;
 	public static final int PLAYER_ARMOR = 2;
 	public static final int PLAYER_HIT_DODGE =3;
+
+	public static final String[] PLAYER_ROOM_ACTIONS = {"No Actions",
+	"Fight Foe","Investigate","Disarm Trap","Open Treasure","Journal"};
 }

@@ -1,3 +1,9 @@
+/*
+* BASIC RPG - DUNGEON CRAWLER
+* CRANKYUNICORN 2019
+* azedo.peter@gmail.com
+*/
+
 package com.example.basicrpg;
 
 import android.util.Log;
@@ -63,7 +69,7 @@ public class RoomMonster implements IRoomMonster {
 	@Override
 	public int MonsterImage(){
 
-		return monsterPresent ? monsterDead ? 0 :ImageReferences.imageFoe[Util.GenerateNumberBetween(0,ImageReferences.imageFoe.length)]: 0;
+		return monsterPresent ? monsterDead ? 0 :monsterImage: 0;
 
 	}
 
@@ -91,6 +97,7 @@ public class RoomMonster implements IRoomMonster {
 	//####FIGHT#####
 	@Override
     public int MonsterAttacks() {
+		
         return monsterDamage + Util.GenerateNumberBetween(0,6) + 1;
 	}
 	
@@ -99,19 +106,64 @@ public class RoomMonster implements IRoomMonster {
     public boolean MonsterDefends(int opponentHitDodge, int opponentAttack ) {
 		if(opponentHitDodge + Util.GenerateNumberBetween(0,6) + 1 > monsterHitDodge + Util.GenerateNumberBetween(0,6) + 1){
 			
-			monsterHealth =monsterHealth-(opponentAttack - monsterArmor);
-			if(monsterHealth < 0){
+			//print to history 
+			int damage = opponentAttack - monsterArmor;
+				damage = damage<0?0:damage;
+			
+			monsterHealth -= damage;
+
+			for (int i=0; i<damage;i++) {
+				//Log.d("ANIMATION","Monster Hit");
+				Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+				Player.GetCurrentPlayer().SetPlayerLastTurnActions("FOE_HIT");
+				Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+			}
+
+			String damageDescription ="";
+			switch(damage){
+				
+				case 0 : damageDescription = "but caused no damage"; break;
+				case 1 : damageDescription = "causing a scratch"; break;
+				case 2 : damageDescription = "causing a minor injury"; break;
+				case 3 : damageDescription = "causing a injury"; break;
+				case 4 : damageDescription = "causing a gapping wound"; break;
+				default : damageDescription = "causing a brutal bleeding"; break;
+				
+			}
+			Player.GetCurrentPlayer().SetPlayerJournal("You hit the foe " + damageDescription);
+			
+			if(monsterHealth <= 0){
 				monsterHealth = 0; 
 				monsterDead = true;
+				Player.GetCurrentPlayer().SetPlayerJournal("You slained the foe");
 			}
-			monsterArmor--;
-			if(monsterArmor<0){
+			
+			
+			
+			if(monsterArmor>0){
+				monsterArmor--;
+				if(monsterArmor<=0){
+					//Animation
+					Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+					Player.GetCurrentPlayer().SetPlayerLastTurnActions("FOE_ARMOR_BREAK");
+					Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+
+					Player.GetCurrentPlayer().SetPlayerJournal("You broke the foe s armor");
+				}
+			}else{
 				monsterArmor = 0;
 			}
 			
 			return false;
 		}
-		
+
+		//Animation
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("FOE_DODGE");
+		Player.GetCurrentPlayer().SetPlayerLastTurnActions("NEUTRAL");
+
+
+		Player.GetCurrentPlayer().SetPlayerJournal("You did not hit the foe");
         return true; //if not hitted
 	}
 
@@ -122,12 +174,43 @@ public class RoomMonster implements IRoomMonster {
 		if(monsterPresent == true){
 			if(monsterDead == false){
 				
-					Player.GetCurrentPlayer().SetPlayerHealth(-5);
+					Player.GetCurrentPlayer().SetPlayerJournal("You fought a foe");
 					Player.GetCurrentPlayer().PlayerDefends(MonsterHitDodge(),MonsterAttacks());
 					MonsterDefends(Player.GetCurrentPlayer().GetPlayerHitDodge(),Player.GetCurrentPlayer().PlayerAttack());
 				
 			}
 		}
+	}
+	
+	@Override
+	public boolean FleeFoe(){
+
+		if(monsterPresent == true){
+			if(monsterDead == false){
+				
+				if(Player.GetCurrentPlayer().IsIlluminated()==true){
+					if(Util.GenerateNumberBetween(0,6)<4){
+						
+						Player.GetCurrentPlayer().SetPlayerJournal("You tried to flee a foe but you failed");
+						
+						Player.GetCurrentPlayer().PlayerDefends(MonsterHitDodge(),MonsterAttacks());
+						return false;					
+					}
+					Player.GetCurrentPlayer().SetPlayerJournal("You here successful fleeing a foe");
+				}else{
+					if(Util.GenerateNumberBetween(0,6)<2){
+						
+						Player.GetCurrentPlayer().SetPlayerJournal("You tried to flee a foe in darkness but you failed");
+						
+						Player.GetCurrentPlayer().PlayerDefends(MonsterHitDodge(),MonsterAttacks());
+						return false;
+					}
+					Player.GetCurrentPlayer().SetPlayerJournal("You here successful fleeing a foe in darkness");
+				}
+			}
+		}
+		
+		return true;
 	}
 
 }

@@ -1,3 +1,9 @@
+/*
+* BASIC RPG - DUNGEON CRAWLER
+* CRANKYUNICORN 2019
+* azedo.peter@gmail.com
+*/
+
 package com.example.basicrpg;
 
 import android.util.Log;

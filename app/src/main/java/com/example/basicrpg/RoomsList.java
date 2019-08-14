@@ -60,18 +60,19 @@ public class RoomsList {
     private DungeonRoom ExitRoom(){
 
         int[] entranceDoors = {0,0,0,0};
+        int selectedImage=ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length-2)];
         String[] entranceDoorsDescription = {"Exit Dungeon","","",""};
 
         DungeonRoom DungeonRoomOut = new DungeonRoom(
                 TrapsList.GetTrapFromList(0),
                 MonstersList.GetMonsterFromList(0),
-                TreasuresList.GetTreasureFromList(0),
+                TreasuresList.GoldenBox(),
                 0,
                 "Exit",
                 "You found yourself out of the dungeon",
                 true,
-                ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length)],
-                ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length)],
+                selectedImage,
+                selectedImage,
                 entranceDoors,
                 entranceDoorsDescription
         );
@@ -195,7 +196,7 @@ public class RoomsList {
                 room.RoomDescription(),
                 room.RoomExplored(),
                 room.RoomImage(true),
-                room.RoomImage(true),
+                room.RoomImage(false),
                 room.GetRoomExitsId(),
                 room.GetRoomExitsNames()
         );

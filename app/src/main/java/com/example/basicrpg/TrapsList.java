@@ -26,7 +26,8 @@ public class TrapsList {
 
         for(int i = 0 ; i < _trapQuantity; i++){
 
-            RoomTrap generatedRoomTrap = new RoomTrap(	DungeonNameGenerator.GenerateTrapName(),
+            RoomTrap generatedRoomTrap = new RoomTrap(	true,
+                                                        DungeonNameGenerator.GenerateTrapName(),
 														Util.GenerateNumberBetween(1,20),
                                                         Util.GenerateNumberBetween(1,20),
                                                         Util.GenerateNumberBetween(1,20));
@@ -38,7 +39,7 @@ public class TrapsList {
 
     private void NoTrap(){
 
-            RoomTrap generatedRoomTrap = new RoomTrap("No Trap",0,0,0);
+            RoomTrap generatedRoomTrap = new RoomTrap(false,"No Trap",0,0,0);
 
             roomTrapList.add(generatedRoomTrap);
     }

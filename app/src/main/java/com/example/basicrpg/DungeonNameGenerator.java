@@ -29,9 +29,16 @@ public class DungeonNameGenerator {
     private static final String[] trapName = {"","","","Spring","Dead","Bear","Switch","Rat","Snake","Flame",};
     private static final String[] trapNameSuffix = {"Trap","Trap","Trap","Pit","Deadfall","Loop","Spike","Device","Bolt Shooter","Blade","Vapor","Gas","Embrace","Bone Crusher","Saw","Flamethrower"};
 
+
     private static final String[] monsterNamePrefix ={"Shadowy","Dark","Misfortuned"};
     private static final String[] monsterName ={"Vulture","Shape","Stalker","Soul"};
 
+
+    private static final String[] treasureNamePrefix = {"Rotting","Moldy","Broken"};
+    private static final String[] treasureName = {"Hooden Box","Hooden Keg"};
+
+
+    private static final String[] treasureDescription = {"Something long forgotten","No one will miss this","One man trash is other man treasure"};
 
     public static String GenerateDungeonName(){
 
@@ -89,15 +96,14 @@ public class DungeonNameGenerator {
 
     public static String GenerateTreasureName(){
 
-        String output ="treasure name";
-
+        String output = treasureNamePrefix[Util.GenerateNumberBetween(0,treasureNamePrefix.length)] + " " +
+                        treasureName [Util.GenerateNumberBetween(0,treasureName.length)];
         return output;
     }
 
     public static String GenerateTreasureDescription(){
 
-        String output ="treasure description";
-
+        String output = treasureDescription [Util.GenerateNumberBetween(0,treasureDescription.length)];
         return output;
     }
 
