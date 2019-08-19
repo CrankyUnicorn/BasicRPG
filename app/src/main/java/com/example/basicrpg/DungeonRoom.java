@@ -228,6 +228,11 @@ public class DungeonRoom{
 		roomExitsId[_index] = _id;
 	}
 
+	public void SetRoomExitsIds(int[] _ids){
+
+		roomExitsId = _ids;
+	}
+
 	public int[] GetRoomExitsId(){
 		return roomExitsId;
 	}

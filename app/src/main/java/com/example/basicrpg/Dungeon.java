@@ -11,6 +11,7 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class Dungeon {
     }
 
 
-    //MAP DUNGEON TREE AND CREATE REFERENCE LIST OF ALL ROOMS
+    //MAP DUNGEON AND CREATE REFERENCE LIST OF ALL ROOMS
     private void MapDungeon() {
 
 		int qLevels = 0;
@@ -179,20 +180,17 @@ public class Dungeon {
 
 
 
-    //CONNECT ROOMS DOORS TO EACH OTHER
-    private void ConnectRooms() {
+    //CONNECT ROOMS DOORS TO EACH OTHER *********************************************************
+    private void OldConnectRooms() {
 
+        //first cycle
         for (int n = 0; n < childLevels.size(); n++) {
-
 
             for (int m = 0; m < childLevels.get(n).GetChildSections().size(); m++) {
 
 
                 DungeonSection _selectedSection = childLevels.get(n).GetChildSections().get(m);
                 DungeonRoom referedRoom = new DungeonRoom();
-
-
-
 
 
                 //SELECT ROOM
@@ -243,7 +241,7 @@ public class Dungeon {
                                     //SETS DOOR K of this room to the FORMULA.ROOMID target room
                                     _selectedSection.GetChildRooms().get(l).SetRoomExitsId(_selectedSection.GetChildRooms().get(formula).RoomID(), j);
 
-                                    //SETS DOOR K of this room to the FORMULA.ROOMNAME target room
+                                    //SETS DOOR K of this room on the FORMULA.ROOMNAME target room
                                     _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomName()), j);
                                     // _selectedSection.GetChildRooms().get(l).SetRoomExitsNames("Go To "+String.valueOf(_selectedSection.GetChildRooms().get(formula).RoomID()), k);
 
@@ -354,6 +352,153 @@ public class Dungeon {
 
                     }
                 }
+            }
+        }
+    }
+
+    //Make Rooms Connect with a node system ****************************
+    private void ConnectRooms() {
+
+
+        int[] mappedRoomEnter = new int[dungeonTotalLevels * dungeonTotalSections];
+        String[] mappedRoomEnterName = new String[dungeonTotalLevels * dungeonTotalSections];
+        int[] mappedRoomExit = new int[dungeonTotalLevels * dungeonTotalSections];
+        String[] mappedRoomExitName = new String[dungeonTotalLevels * dungeonTotalSections];
+        int counterSection = 0;
+
+        //MAPPING ENTER AND EXIT POINTS
+        for (int n = 0; n < childLevels.size(); n++) {
+
+            for (int m = 0; m < childLevels.get(n).GetChildSections().size(); m++) {
+
+                DungeonSection actualSection = childLevels.get(n).GetChildSections().get(m);
+                int lastRoom = actualSection.GetChildRooms().size()-1;
+
+                    mappedRoomEnter[counterSection] =   actualSection.GetChildRooms().get(0).RoomID();
+                    mappedRoomEnterName[counterSection] =   actualSection.GetChildRooms().get(0).RoomName();
+
+                    mappedRoomExit[counterSection] =   actualSection.GetChildRooms().get(lastRoom).RoomID();
+                    mappedRoomExitName[counterSection] =   actualSection.GetChildRooms().get(lastRoom).RoomName();
+
+                counterSection++;
+            }
+        }
+
+        //CONNECTING ENTER AND EXIT POINTS
+        counterSection = 0;
+
+        for (int n = 0; n < childLevels.size(); n++) {
+
+            for (int m = 0; m <childLevels.get(n).GetChildSections().size(); m++) {
+
+                DungeonSection actualSection = childLevels.get(n).GetChildSections().get(m);
+                int lastRoom = actualSection.GetChildRooms().size()-1;
+
+
+                if( n != 0 && m != 0) {
+                    actualSection.GetChildRooms().get(0).SetRoomExitsId(counterSection <= 0 ? mappedRoomEnter[0] : mappedRoomExit[counterSection - 1], 0);
+                    actualSection.GetChildRooms().get(0).SetRoomExitsNames(counterSection <= 0 ? mappedRoomEnterName[0] : mappedRoomExitName[counterSection - 1], 0);
+                }
+
+                    actualSection.GetChildRooms().get(lastRoom).SetRoomExitsId(counterSection < mappedRoomExit.length ? mappedRoomEnter[counterSection + 1] : mappedRoomEnter[0], 3);
+                    actualSection.GetChildRooms().get(lastRoom).SetRoomExitsNames(counterSection < mappedRoomExit.length ? mappedRoomEnterName[counterSection + 1] : mappedRoomEnterName[0], 3);
+
+                counterSection++;
+            }
+        }
+
+        //CONNECTION ROOMS
+        for (int n = 0; n < childLevels.size(); n++) {
+
+            for (int m = 0; m < childLevels.get(n).GetChildSections().size(); m++) {
+                //--
+
+                DungeonSection actualSection = childLevels.get(n).GetChildSections().get(m);
+                int actualRoomSize = actualSection.GetChildRooms().size();
+                int[] actualSectionRoomsIDs = new int[actualRoomSize];
+                int actualRoomDoorFocus = 0;
+
+                //Creates a list of all the Room Ids in this section
+                for (int l = 0; l < actualSection.GetChildRooms().size(); l++) {
+
+                    DungeonRoom actualRoom = actualSection.GetChildRooms().get(l);
+
+                    actualSectionRoomsIDs[l] = actualRoom.RoomID();
+                }
+
+
+                for (int l = 0; l < actualSection.GetChildRooms().size(); l++) {
+
+
+
+                    DungeonRoom actualRoom = actualSection.GetChildRooms().get(l);
+                    int lMaxSize = actualSection.GetChildRooms().size();
+
+                        int doorExitModifier =  lMaxSize <= 1 ? 0 :
+                                                l == 0 ? 1 :
+                                                l == 1 ? -1 :
+                                                lMaxSize < 5 ? -l :
+                                                l < 5 ? -2 :
+                                                l == lMaxSize-2 ? -5:
+                                                l == lMaxSize-1 ? -4:
+                                                -2;
+                        //Log.d("Modifiers",String.valueOf(doorExitModifier));
+
+                        int doorExitPointer = l + doorExitModifier;
+                        //Log.d("Pointer",String.valueOf(doorExitPointer));
+
+                        // doorExitPointer =   doorExitPointer >= lMaxSize ? lMaxSize-1: doorExitPointer;//safety only
+                        //doorExitPointer =   doorExitPointer < 0 ? 0: doorExitPointer;//safety only
+
+                        actualRoomDoorFocus = 0;
+                        //Log.d("PRE While", "entering...");
+                        while(true){
+                            if(doorExitPointer >= lMaxSize){ break; } //do not delete
+                           // if(doorExitPointer >= actualRoom.GetRoomExitsId().length){ break; } //do not delete
+                            if ( actualRoomDoorFocus >= actualRoom.GetRoomExitsId().length){ break; } //do not delete
+
+                            if ( actualSectionRoomsIDs[doorExitPointer] != actualRoom.RoomID() &&
+                                    actualRoom.GetRoomExitIdByIndex(actualRoomDoorFocus) == 0 ) {
+
+                                actualRoom.SetRoomExitsId(
+                                        actualSection.GetChildRooms().get(doorExitPointer).RoomID(),
+                                        actualRoomDoorFocus);
+                                actualRoom.SetRoomExitsNames(actualSection.GetChildRooms().get(doorExitPointer).RoomName(),
+                                        actualRoomDoorFocus);
+                                //Log.d("While IF", "door:"+actualRoomDoorFocus+" id:"+String.valueOf(actualSection.GetChildRooms().get(doorExitPointer).RoomID()));
+                            }
+
+                            if (actualRoom.GetRoomExitIdByIndex(actualRoomDoorFocus) != 0 ){
+                                actualRoomDoorFocus++;
+                            }
+
+                            doorExitPointer++;
+
+                        }
+
+                        //SHUFFLE ACTUAL ROOM'S DOORS IDS
+                        List<Integer> doorsIDS = new ArrayList<>(actualRoom.GetRoomExitsId().length);
+                        List<String> doorsNames = new ArrayList<>(actualRoom.GetRoomExitsNames().length);
+                        int counter = 0;
+
+                        for (int i = 0 ; i < actualRoom.GetRoomExitsId().length; i++) {
+                            doorsIDS.add(Integer.valueOf(actualRoom.GetRoomExitIdByIndex(i)));
+                            doorsNames.add(actualRoom.GetRoomExitNameByIndex(i));
+                        }
+
+                        while(doorsIDS.size()!=0){
+
+                            int  randomNumber = Util.GenerateNumberBetween(0,doorsIDS.size());
+
+                            actualRoom.SetRoomExitsId(doorsIDS.get(randomNumber),counter);
+                            actualRoom.SetRoomExitsNames(doorsNames.get(randomNumber),counter);
+                            doorsIDS.remove(randomNumber);
+                            doorsNames.remove(randomNumber);
+                            counter++;
+                        }
+
+                }
+                    //--
             }
         }
     }

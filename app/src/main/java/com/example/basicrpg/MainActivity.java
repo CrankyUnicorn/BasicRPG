@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
             if (!animationPlaying) {
                 UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedActionButton(String.valueOf(doorOneButton.getText()));
                 AnimateTurn();
-                CheckIfDead();
             }
         }
     }
@@ -120,10 +119,9 @@ public class MainActivity extends AppCompatActivity {
     public void buttonTwoClick(View view) {
         if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
             if (!animationPlaying) {
-                ButtonSound();
+                PlaySounds(0);
                 UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(0);
                 AnimateTurn();
-                CheckIfDead();
             }
         }
     }
@@ -131,10 +129,9 @@ public class MainActivity extends AppCompatActivity {
     public void buttonThreeClick(View view) {
         if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
             if (!animationPlaying) {
-                ButtonSound();
+                PlaySounds(0);
                 UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(1);
                 AnimateTurn();
-                CheckIfDead();
             }
         }
     }
@@ -142,16 +139,14 @@ public class MainActivity extends AppCompatActivity {
     public void buttonFourClick(View view) {//############# JOURNAL ##############
         UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedActionButton(String.valueOf(doorFourButton.getText()));
         outputContent();
-        CheckIfDead();
     }
 
     public void buttonFiveClick(View view) {
         if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
             if (!animationPlaying) {
-                ButtonSound();
+                PlaySounds(0);
                 UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(2);
                 AnimateTurn();
-                CheckIfDead();
             }
         }
     }
@@ -159,10 +154,9 @@ public class MainActivity extends AppCompatActivity {
     public void buttonSixClick(View view) {
         if (UserInterfaceIOHandler.GetUserInterfaceIOHandler().overlayWindowOpen == false) {
             if (!animationPlaying) {
-                ButtonSound();
+                PlaySounds(0);
                 UserInterfaceIOHandler.GetUserInterfaceIOHandler().SelectedDoorButton(3);
                 AnimateTurn();
-                CheckIfDead();
             }
         }
     }
@@ -241,28 +235,69 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void ButtonSound() {
+    public void PlaySounds(int _soundtype) {
 
         int doorSound = Util.GenerateNumberBetween(0, 4);
-        int soundRef = 0;
+        int soundRef = R.raw.consume;
 
-        switch (doorSound) {
+        switch (_soundtype){
+            case 0://doors
 
-            case 0:
-                soundRef = R.raw.dooropen01;
+                switch (doorSound) {
+
+                    case 0:
+                        soundRef = R.raw.dooropen01;
+                        break;
+                    case 1:
+                        soundRef = R.raw.dooropen02;
+                        break;
+                    case 2:
+                        soundRef = R.raw.dooropen03;
+                        break;
+                    case 3:
+                        soundRef = R.raw.dooropen04;
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
-            case 1:
-                soundRef = R.raw.dooropen02;
+            case 1://foe hit
+                soundRef= R.raw.attack;
                 break;
-            case 2:
-                soundRef = R.raw.dooropen03;
+            case 02://foe dodge
+                soundRef= R.raw.dodgee;
                 break;
-            case 3:
-                soundRef = R.raw.dooropen04;
+            case 3://player hit
+                soundRef= R.raw.hit;
                 break;
-            default:
+            case 4://player dodge
+                soundRef= R.raw.dodgee;
                 break;
+            case 5://player investigate
+                soundRef= R.raw.investigat;
+                break;
+            case 6://player trap
+                soundRef= R.raw.traptrigger;
+                break;
+            case 7://"PLAYER_DETECT_TRAP"
+                soundRef= R.raw.trap;
+                break;
+            case 8://"PLAYER_DISARM_TRAP"
+                soundRef= R.raw.trapdissarm;
+                break;
+            case 9:// "PLAYER_TREASURE"
+                soundRef= R.raw.treasureopen;
+                break;
+            case 10:// "PLAYER_DETECT_TREASURE"
+                soundRef= R.raw.trap;
+                break;
+            case 11://"FOE_ARMOR_BREAK"
+                soundRef=R.raw.armorbreak;
+                break;
+            default:break;
         }
+
 
         sound = MediaPlayer.create(this, soundRef);
 
@@ -330,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             switch (Player.GetCurrentPlayer().GetPlayerLastTurnAction()) {
                                 case "FOE_HIT":
+                                    PlaySounds(1);
                                     dungeonImageViewEffects.setImageResource(ImageReferences.imageSlashFoe[Util.GenerateNumberBetween(0,ImageReferences.imageSlashFoe.length)]);
                                     //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
                                     dungeonImageViewFoe.setX(20.0f);
@@ -339,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
                                     dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
                                     break;
                                 case "FOE_DODGE":
+                                    PlaySounds(2);
                                     dungeonImageViewEffects.setImageResource(R.drawable.dodge00);
                                     //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
                                     dungeonImageViewFoe.setX(-20.0f);
@@ -348,6 +385,7 @@ public class MainActivity extends AppCompatActivity {
                                     //dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
                                     break;
                                 case "PLAYER_HIT":
+                                    PlaySounds(3);
                                     dungeonImageViewEffects.setImageResource(R.drawable.charhit00);
                                     //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
                                     dungeonImageViewFoe.setX(-20.0f);
@@ -357,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
                                     dungeonImageViewChar.setColorFilter(Color.argb(127, 255, 127, 127));
                                     break;
                                 case "PLAYER_DODGE":
+                                    PlaySounds(4);
                                     dungeonImageViewEffects.setImageResource(R.drawable.dodge01);
                                     //dungeonImageViewFoe.setImageResource(ImageReferences.imageFoe[0]);
                                     dungeonImageViewFoe.setX(-20.0f);
@@ -366,25 +405,32 @@ public class MainActivity extends AppCompatActivity {
                                     //dungeonImageViewChar.setColorFilter(Color.argb(0, 0, 0, 0));
                                     break;
                                 case "PLAYER_INVESTIGATE":
+                                    PlaySounds(5);
                                     dungeonImageViewEffects.setImageResource(ImageReferences.imageInvestigate[Util.GenerateNumberBetween(0,ImageReferences.imageInvestigate.length)]);
                                     break;
                                 case "PLAYER_TRAP":
+                                    PlaySounds(6);
                                     dungeonImageViewEffects.setImageResource(R.drawable.trap01);
                                     dungeonImageViewChar.setColorFilter(Color.argb(127, 255, 127, 127));
                                     break;
                                 case "PLAYER_DETECT_TRAP":
+                                    PlaySounds(7);
                                     dungeonImageViewEffects.setImageResource(R.drawable.trap00);
                                     break;
                                 case "PLAYER_DISARM_TRAP":
+                                    PlaySounds(8);
                                     dungeonImageViewEffects.setImageResource(R.drawable.trap02);
                                     break;
                                 case "PLAYER_TREASURE":
+                                    PlaySounds(9);
                                     dungeonImageViewEffects.setImageResource(R.drawable.treasu01);
                                     break;
                                 case "PLAYER_DETECT_TREASURE":
+                                    PlaySounds(10);
                                     dungeonImageViewEffects.setImageResource(R.drawable.treasu00);
                                     break;
                                 case "FOE_ARMOR_BREAK":
+                                    PlaySounds(11);
                                     dungeonImageViewEffects.setImageResource(R.drawable.armor00);
                                     break;
                                 case "NEUTRAL":
@@ -427,6 +473,7 @@ public class MainActivity extends AppCompatActivity {
                     if (Player.GetCurrentPlayer().GetPlayerLastTurnAction() == "Empty") {
                         myTimer.cancel();
                         animationPlaying = false;
+                        CheckIfDead();
                     } else {
 
                         Player.GetCurrentPlayer().DeletePlayerLastTurnAction();

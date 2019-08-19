@@ -35,9 +35,9 @@ public class RoomsList {
 
 	private DungeonRoom EntranceRoom(){
 
-        int[] entranceDoors = {2,0,0,0};
+        int[] entranceDoors = {0,0,0,0};
         int selectedImage=ImageReferences.imageOutside[Util.GenerateNumberBetween(2,ImageReferences.imageOutside.length)];
-        String[] entranceDoorsDescription = {"Enter Dungeon","","",""};
+        String[] entranceDoorsDescription = {"","","",""};
 
             DungeonRoom DungeonRoomOut = new DungeonRoom(
                     TrapsList.GetTrapFromList(0),
@@ -59,7 +59,7 @@ public class RoomsList {
 
     private DungeonRoom ExitRoom(){
 
-        int[] entranceDoors = {0,0,0,0};
+        int[] entranceDoors = {9999,0,0,0};
         int selectedImage=ImageReferences.imageOutside[Util.GenerateNumberBetween(0,ImageReferences.imageOutside.length-2)];
         String[] entranceDoorsDescription = {"Exit Dungeon","","",""};
 
